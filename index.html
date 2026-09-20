@@ -1,0 +1,249 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ビルドシミュレーター</title>
+<style>
+*{box-sizing:border-box}
+:root{
+  --indigo:#4f46e5; --indigo-dark:#3730a3; --indigo-light:#eef2ff;
+  --slate-50:#f8fafc; --slate-100:#f1f5f9; --slate-200:#e2e8f0;
+  --slate-300:#cbd5e1; --slate-400:#94a3b8; --slate-500:#64748b;
+  --slate-600:#475569; --slate-700:#334155; --slate-800:#1e293b; --slate-900:#0f172a;
+  --emerald:#059669; --red:#dc2626;
+}
+html,body{margin:0;height:100%;font-family:ui-sans-serif,system-ui,-apple-system,"Segoe UI","Noto Sans JP",sans-serif;color:var(--slate-800)}
+body{background:var(--slate-100)}
+button,input,select{font:inherit}
+button{cursor:pointer}
+.app{display:flex;height:100vh;overflow:hidden}
+.panel{overflow-y:auto}
+.left{width:25%;background:white;box-shadow:0 2px 8px #00000012;padding:24px;border-right:1px solid var(--slate-200);display:flex;flex-direction:column;position:relative;z-index:10}
+.center{width:50%;background:var(--slate-50);padding:24px;overflow-y:auto}
+.right{width:25%;background:var(--slate-900);padding:24px;overflow-y:auto;color:#f8fafc;display:flex;flex-direction:column}
+.brand{display:flex;gap:9px;align-items:center;margin-bottom:24px;border-bottom:1px solid var(--slate-200);padding-bottom:9px;color:#312e81}
+.brand h2{font-size:20px;margin:0}
+.section{margin-bottom:24px}
+.section h3{font-size:14px;margin:0 0 9px;font-weight:700;color:var(--slate-700)}
+select,.stat-input{width:100%;padding:10px;border:1px solid var(--slate-300);border-radius:9px;background:var(--slate-50);outline:none}
+select:focus,.stat-input:focus{border-color:#818cf8;box-shadow:0 0 0 3px #818cf822}
+.stat-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.stat label{display:block;font-size:12px;color:var(--slate-500);margin-bottom:4px}
+.stat-input{text-align:right;padding:8px}
+.book-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px 8px}
+.book{display:flex;align-items:center;gap:8px;font-size:14px;cursor:pointer;color:var(--slate-700)}
+.book input{accent-color:var(--indigo);width:17px;height:17px}
+.bottom-action{margin-top:auto;padding-top:24px;border-top:1px solid var(--slate-100)}
+.btn{border:0;border-radius:9px;padding:11px 16px;font-weight:700;transition:.15s}
+.btn.primary{background:var(--indigo);color:#fff}.btn.primary:hover{background:var(--indigo-dark)}
+.btn.secondary{width:100%;background:var(--indigo-light);color:#4338ca;border:1px solid #c7d2fe}.btn.secondary:hover{background:#e0e7ff}
+.header{display:flex;justify-content:space-between;align-items:end;border-bottom:1px solid var(--slate-200);padding:8px 0 10px;margin-bottom:24px;position:sticky;top:0;background:#f8fafce8;backdrop-filter:blur(8px);z-index:5}
+.header h2{font-size:20px;margin:0}
+.count{font-size:13px;font-weight:600;color:var(--slate-500);background:white;padding:5px 12px;border:1px solid var(--slate-200);border-radius:999px}
+.category{margin-bottom:30px}
+.category-title{font-size:15px;color:var(--slate-700);margin:0 0 12px;padding-bottom:7px;border-bottom:1px solid var(--slate-200)}
+.skill-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+.skill-card{background:white;border:1px solid var(--slate-200);border-radius:10px;padding:14px;box-shadow:0 1px 2px #00000008}
+.skill-card.equipped{border-color:#818cf8;background:#eef2ff55}
+.skill-top{display:flex;justify-content:space-between;gap:8px;align-items:start}
+.skill-name{font-weight:800;color:#312e81;font-size:15px}
+.set-badge{font-size:10px;font-weight:800;padding:3px 7px;border-radius:999px;background:#e0e7ff;color:#4338ca;white-space:nowrap}
+.trigger{display:inline-block;font-size:11px;font-weight:700;color:#4f46e5;background:#eef2ff;padding:3px 6px;border-radius:5px;margin:8px 0}
+.effect{font-size:13px;color:var(--slate-600);line-height:1.55;min-height:40px}
+.skill-card button{width:100%;margin-top:14px;padding:8px;border-radius:8px;border:1px solid transparent;font-weight:800;font-size:13px}
+.skill-card button.add{background:var(--indigo);color:#fff}.skill-card button.add:hover{background:var(--indigo-dark)}
+.skill-card button.remove{background:var(--slate-100);color:var(--slate-600)}.skill-card button.remove:hover{background:#fef2f2;color:var(--red);border-color:#fecaca}
+.skill-card button:disabled{background:var(--slate-100);color:var(--slate-400);cursor:not-allowed;opacity:.6}
+.empty{text-align:center;padding:80px 20px;color:var(--slate-400);line-height:1.8}
+.right-header{display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid var(--slate-700);padding:8px 0 12px;margin-bottom:16px;position:sticky;top:0;background:#0f172ae8;backdrop-filter:blur(8px);z-index:5}
+.right-header h2{font-size:18px;margin:0;color:white}
+.slot-count{font-size:13px;font-weight:800;padding:5px 8px;border-radius:6px;background:var(--slate-800);color:#cbd5e1}
+.slot-count.full{background:#6366f1;color:#fff}
+.slots{display:flex;flex-direction:column;gap:8px;flex:1}
+.slot{min-height:58px;border:1px dashed #334155;background:#1e293c;border-radius:9px;padding:11px;display:flex;align-items:center;justify-content:center}
+.slot-num{color:#475569;font-size:11px;font-weight:800;letter-spacing:1px}
+.equipped-slot{position:relative;background:#1e293b;border:1px solid #334155;border-radius:9px;padding:11px;min-height:58px}
+.equipped-slot:hover{border-color:#64748b}
+.equipped-slot .name{font-weight:800;color:#a5b4fc;font-size:13px;padding-right:30px}
+.equipped-slot .effect{font-size:11px;color:#94a3b8;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;min-height:0;margin-top:3px}
+.remove-x{position:absolute;right:8px;top:50%;transform:translateY(-50%);border:0;background:transparent;color:#64748b;font-size:20px;padding:3px}.remove-x:hover{color:#f87171}
+.clear{margin-top:18px;padding-top:16px;border-top:1px solid #1e293b;position:sticky;bottom:0;background:var(--slate-900);padding-bottom:4px}
+.clear button{width:100%;padding:11px;border-radius:9px;border:1px solid #334155;background:#1e293b;color:#cbd5e1;font-weight:800}.clear button:hover:not(:disabled){background:#7f1d1d33;color:#f87171;border-color:#ef444480}.clear button:disabled{opacity:.45;cursor:not-allowed}
+.mobile-summary{display:none}
+.modal-backdrop{position:fixed;inset:0;background:#0009;z-index:50;display:flex;align-items:center;justify-content:center;padding:16px;backdrop-filter:blur(4px)}
+.modal{background:white;border-radius:14px;width:min(900px,100%);max-height:90vh;display:flex;flex-direction:column;box-shadow:0 25px 60px #0004}
+.modal-head{display:flex;justify-content:space-between;align-items:center;padding:16px;border-bottom:1px solid var(--slate-200);background:var(--slate-50);border-radius:14px 14px 0 0}
+.modal-head h2{margin:0;font-size:20px}.close{border:0;background:transparent;color:var(--slate-400);font-size:24px}
+.modal-body{padding:24px;overflow:auto;background:var(--slate-100)}
+.summary-grid{display:grid;grid-template-columns:1fr 2fr;gap:24px}
+.summary-box{background:white;border:1px solid var(--slate-200);border-radius:9px;padding:16px;box-shadow:0 1px 2px #00000008;margin-bottom:16px}
+.summary-box h3{font-size:15px;margin:0 0 12px;padding-bottom:8px;border-bottom:1px solid var(--slate-200)}
+.row{display:flex;justify-content:space-between;align-items:center;margin:7px 0;font-size:13px}
+.tag{background:#eef2ff;color:#4338ca;padding:2px 7px;border-radius:5px;font-weight:700}.book-tag{background:#ecfdf5;color:#047857;border:1px solid #a7f3d0;padding:4px 7px;border-radius:6px;font-size:11px}
+.tags{display:flex;flex-wrap:wrap;gap:5px}
+.summary-skills{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.summary-skill{padding:11px;border:1px solid #e0e7ff;background:#eef2ff55;border-radius:7px}.summary-skill b{color:#312e81;font-size:13px}.summary-skill div{font-size:11px;color:var(--slate-500);margin-top:3px}.summary-skill span{font-size:11px;color:var(--slate-700)}
+.modal-foot{padding:16px;border-top:1px solid var(--slate-200);display:flex;justify-content:flex-end}
+@media(max-width:900px){
+  .app{height:auto;min-height:100vh;display:block;overflow:visible}
+  .left,.center,.right{width:100%;overflow:visible}
+  .left{border-right:0}
+  .right{display:none}
+  .skill-grid{grid-template-columns:1fr}
+  .mobile-summary{display:flex;position:fixed;right:20px;bottom:20px;z-index:40;width:54px;height:54px;border:0;border-radius:50%;background:var(--indigo);color:white;align-items:center;justify-content:center;box-shadow:0 8px 25px #0003;font-size:22px}
+  .summary-grid{grid-template-columns:1fr}
+}
+@media(min-width:901px) and (max-width:1200px){.skill-grid{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<div id="app" class="app"></div>
+<div id="modal-root"></div>
+<script>
+const SKILLS = [{"name": "ブレイク", "trigger": "SLv0以上 / 通常時", "req": {"type": "none"}, "effect": "[敵]攻撃"}, {"name": "インパクト", "trigger": "SLv1以上 / 通常時", "req": {"type": "none"}, "effect": "[敵]攻撃"}, {"name": "リジェクト", "trigger": "SLv2以上 / 通常時", "req": {"type": "none"}, "effect": "[敵]攻撃"}, {"name": "フェイタリティ", "trigger": "SLv3以上 / 通常時", "req": {"type": "none"}, "effect": "[敵]攻撃"}, {"name": "ダブルスタブ", "trigger": "SLv1以上 / 通常時", "req": {"type": "none"}, "effect": "[敵2]攻撃"}, {"name": "トライブレイク", "trigger": "SLv2以上 / 通常時", "req": {"type": "none"}, "effect": "[敵3]攻撃"}, {"name": "クァルトゥム", "trigger": "SLv3以上 / 通常時", "req": {"type": "none"}, "effect": "[敵2/2回]攻撃"}, {"name": "ヒール", "trigger": "SLv0以上 / 通常時", "req": {"type": "none"}, "effect": "[弱味]回復"}, {"name": "キュア", "trigger": "SLv1以上 / 通常時", "req": {"type": "none"}, "effect": "[弱味]回復"}, {"name": "デュアルヒール", "trigger": "SLv2以上 / 通常時", "req": {"type": "none"}, "effect": "[弱味/2回]回復"}, {"name": "トリプルヒール", "trigger": "SLv3以上 / 通常時", "req": {"type": "none"}, "effect": "[弱味/3回]回復"}, {"name": "シックネス", "trigger": "SLv0以上 / 通常時", "req": {"type": "none"}, "effect": "[敵/2回]悪性変調"}, {"name": "インフェクト", "trigger": "SLv1以上 / 通常時", "req": {"type": "none"}, "effect": "[敵/3回]悪性変調"}, {"name": "カオティック", "trigger": "SLv2以上 / 通常時", "req": {"type": "none"}, "effect": "[敵/4回]悪性変調"}, {"name": "アムレート", "trigger": "SLv0以上 / 通常時", "req": {"type": "none"}, "effect": "[乱味/2回]良性変調"}, {"name": "プレッシング", "trigger": "SLv1以上 / 通常時", "req": {"type": "none"}, "effect": "[乱味/3回]良性変調"}, {"name": "セレスティアル", "trigger": "SLv2以上 / 通常時", "req": {"type": "none"}, "effect": "[乱味/4回]良性変調"}, {"name": "ノヴェーナ", "trigger": "SLv1以上 / 通常時", "req": {"type": "none"}, "effect": "[敵/2回]悪性変調+[乱味/2回]良性変調"}, {"name": "マジェスティック", "trigger": "SLv2以上 / 通常時", "req": {"type": "none"}, "effect": "[敵/3回]悪性変調+[乱味/3回]良性変調"}, {"name": "モニュメンタム", "trigger": "SLv3以上 / 通常時", "req": {"type": "none"}, "effect": "[敵/4回]悪性変調+[乱味/4回]良性変調"}, {"name": "太陽", "trigger": "戦闘開始時", "req": {"type": "none"}, "effect": "[自]MHP増＆HATE増"}, {"name": "月花", "trigger": "戦闘開始時", "req": {"type": "none"}, "effect": "[自]MHP増＆HATE減"}, {"name": "ブロッキング", "trigger": "被攻撃前", "req": {"type": "role", "role": "TANK"}, "effect": "[自]次被ダメ減＆祝福"}, {"name": "ウォール", "trigger": "SLv0以上 / 通常時", "req": {"type": "role", "role": "TANK"}, "effect": "[味全]守増でなければ守増+[自]良性変調"}, {"name": "グアルダ", "trigger": "SLv0以上 / 通常時", "req": {"type": "role", "role": "TANK"}, "effect": "[自]保護+[猛敵2]攻減"}, {"name": "フォルトレス", "trigger": "ターン開始時", "req": {"type": "role", "role": "TANK"}, "effect": "[自]HATE増+[堅味2]祝福"}, {"name": "ミュール", "trigger": "SLv1以上 / 通常時", "req": {"type": "role", "role": "TANK"}, "effect": "[味全]守増でなければ守増+[味3]良性変調"}, {"name": "パシュート", "trigger": "与ダメ後", "req": {"type": "role", "role": "DPS"}, "effect": "[敵]★攻撃＆次被ダメ増"}, {"name": "ディセクト", "trigger": "SLv0以上 / 通常時", "req": {"type": "role", "role": "DPS"}, "effect": "[弱敵]痛撃＆凍結"}, {"name": "ディバイド", "trigger": "SLv0以上 / 通常時", "req": {"type": "role", "role": "DPS"}, "effect": "[敵]疾撃+[敵]反撃"}, {"name": "リッパー", "trigger": "SLv1以上 / 通常時", "req": {"type": "role", "role": "DPS"}, "effect": "[弱敵]★痛撃＆凍結"}, {"name": "ルプトゥラ", "trigger": "SLv1以上 / 通常時", "req": {"type": "role", "role": "DPS"}, "effect": "[敵]★疾撃+[敵]★反撃"}, {"name": "ルネ", "trigger": "与回復後", "req": {"type": "role", "role": "HEAL"}, "effect": "[弱味]★回復"}, {"name": "サナーレ", "trigger": "SLv0以上 / 通常時", "req": {"type": "role", "role": "HEAL"}, "effect": "[弱味]回復＆加護"}, {"name": "レスタ", "trigger": "SLv0以上 / 通常時", "req": {"type": "role", "role": "HEAL"}, "effect": "[弱味]HPが50%以下なら回復+[弱味]回復"}, {"name": "リサナーレ", "trigger": "SLv1以上 / 通常時", "req": {"type": "role", "role": "HEAL"}, "effect": "[弱味2]★回復＆加護"}, {"name": "ゾーエ", "trigger": "SLv0以上 / 味方重傷時", "req": {"type": "role", "role": "HEAL"}, "effect": "[弱味]HPが25%以下なら★回復＆治癒+[弱味]★回復"}, {"name": "ゴスペル", "trigger": "ターン開始時", "req": {"type": "role", "role": "SUP"}, "effect": "[癒味]祝福＆速増"}, {"name": "シール", "trigger": "SLv0以上 / 通常時", "req": {"type": "role", "role": "SUP"}, "effect": "[猛敵]呪縛＆速減"}, {"name": "ブルカット", "trigger": "SLv0以上 / 通常時", "req": {"type": "role", "role": "SUP"}, "effect": "[猛味]攻増+[癒味]祝福"}, {"name": "サプレッション", "trigger": "SLv1以上 / 通常時", "req": {"type": "role", "role": "SUP"}, "effect": "[猛敵]悪性変調＆攻減+[癒敵]呪縛"}, {"name": "モルバス", "trigger": "ターン開始時", "req": {"type": "role", "role": "SUP"}, "effect": "[堅敵2]守減＆阻害"}, {"name": "猛攻", "trigger": "戦闘開始時", "req": {"type": "stat", "stat": "atk", "val": 5}, "effect": "[自]ATK増＆祝福"}, {"name": "アグレ", "trigger": "SLv0以上 / 9行動毎", "req": {"type": "stat", "stat": "atk", "val": 5}, "effect": "[自]ATK増＆保護"}, {"name": "クレセント", "trigger": "SLv0以上 / 5行動毎", "req": {"type": "stat", "stat": "atk", "val": 10}, "effect": "[自]攻増+[敵]★攻撃"}, {"name": "ブレイクスルー", "trigger": "ターン開始時", "req": {"type": "stat", "stat": "atk", "val": 10}, "effect": "[自]攻増+[弱敵2]守減"}, {"name": "ハイブレイク", "trigger": "SLv0以上 / 4行動毎", "req": {"type": "stat", "stat": "atk", "val": 15}, "effect": "[自]祝福+[敵]★攻撃"}, {"name": "クロスカット", "trigger": "SLv0以上 / 7行動毎", "req": {"type": "stat", "stat": "atk", "val": 20}, "effect": "[敵3/2回]★攻撃＆次被ダメ増"}, {"name": "ストレンジア", "trigger": "自分行動前", "req": {"type": "stat", "stat": "atk", "val": 25}, "effect": "[自]祝福+[敵]★攻撃"}, {"name": "ブレイジング", "trigger": "SLv0以上 / 9行動毎", "req": {"type": "stat", "stat": "atk", "val": 30}, "effect": "[自]ATK増+[敵/2回]★攻撃"}, {"name": "瞬足", "trigger": "戦闘開始時", "req": {"type": "stat", "stat": "agi", "val": 5}, "effect": "[自]AGI増＆加護"}, {"name": "レヴァ", "trigger": "SLv0以上 / 9行動毎", "req": {"type": "stat", "stat": "agi", "val": 5}, "effect": "[自]AGI増＆保護"}, {"name": "フルスピード", "trigger": "SLv0以上 / 5行動毎", "req": {"type": "stat", "stat": "agi", "val": 10}, "effect": "[自]連続増＆速増＆AGI増"}, {"name": "リワインド", "trigger": "ターン開始時", "req": {"type": "stat", "stat": "agi", "val": 10}, "effect": "[自]速増+[乱敵2]速減"}, {"name": "ユニゾン", "trigger": "SLv0以上 / 4行動毎", "req": {"type": "stat", "stat": "agi", "val": 15}, "effect": "[味全]速増＆連続増"}, {"name": "グラドゥス", "trigger": "回避時", "req": {"type": "stat", "stat": "agi", "val": 20}, "effect": "[味全]平穏でなければ平穏+[乱味]良性変調"}, {"name": "アクディセル", "trigger": "SLv0以上 / 7行動毎", "req": {"type": "stat", "stat": "agi", "val": 25}, "effect": "[味全]速増＆加護＆連続増"}, {"name": "ステップアップ", "trigger": "SLv0以上 / 9行動毎", "req": {"type": "stat", "stat": "agi", "val": 30}, "effect": "[自]AGI増+[味全]速増＆連続増"}, {"name": "集中", "trigger": "戦闘開始時", "req": {"type": "stat", "stat": "dex", "val": 5}, "effect": "[自]DEX増＆祝福"}, {"name": "ルーヴ", "trigger": "SLv0以上 / 9行動毎", "req": {"type": "stat", "stat": "dex", "val": 5}, "effect": "[自]DEX増＆保護"}, {"name": "エンハンス", "trigger": "SLv0以上 / 4行動毎", "req": {"type": "stat", "stat": "dex", "val": 10}, "effect": "[自]次与ダメ増＆祝福"}, {"name": "フォーカス", "trigger": "ターン開始時", "req": {"type": "stat", "stat": "dex", "val": 10}, "effect": "[自]祝福+[弱敵2]次被ダメ増"}, {"name": "ハイスピアー", "trigger": "SLv0以上 / 5行動毎", "req": {"type": "stat", "stat": "dex", "val": 15}, "effect": "[自]攻増+[敵]★痛撃"}, {"name": "ベアトゥス", "trigger": "与クリティカル前", "req": {"type": "stat", "stat": "dex", "val": 20}, "effect": "[敵全]呪縛でなければ呪縛+[弱敵]呪縛"}, {"name": "アサルトシュート", "trigger": "SLv0以上 / 7行動毎", "req": {"type": "stat", "stat": "dex", "val": 25}, "effect": "[敵全]次被ダメ増+[敵2]★痛撃"}, {"name": "ピンポイント", "trigger": "SLv0以上 / 9行動毎", "req": {"type": "stat", "stat": "dex", "val": 30}, "effect": "[自]DEX増+[敵]★痛撃"}, {"name": "堅守", "trigger": "戦闘開始時", "req": {"type": "stat", "stat": "vit", "val": 5}, "effect": "[自]DEF増＆加護"}, {"name": "ソルド", "trigger": "SLv0以上 / 9行動毎", "req": {"type": "stat", "stat": "vit", "val": 5}, "effect": "[自]DEF増＆保護"}, {"name": "ワイドシールド", "trigger": "SLv0以上 / 5行動毎", "req": {"type": "stat", "stat": "vit", "val": 10}, "effect": "[味全]次被ダメ減＆祝福＆平穏"}, {"name": "プロテクト", "trigger": "ターン開始時", "req": {"type": "stat", "stat": "vit", "val": 10}, "effect": "[味2]守増+[味全]DEF増"}, {"name": "ディフレクト", "trigger": "SLv0以上 / 7行動毎", "req": {"type": "stat", "stat": "vit", "val": 15}, "effect": "[味全]MHP増＆保護＆治癒"}, {"name": "トゥテーラ", "trigger": "被攻撃後", "req": {"type": "stat", "stat": "vit", "val": 20}, "effect": "[自]祝福＆速増"}, {"name": "シウダデラ", "trigger": "SLv0以上 / 4行動毎", "req": {"type": "stat", "stat": "vit", "val": 25}, "effect": "[味全]次被ダメ減＆守増＆加護"}, {"name": "ディフェンサー", "trigger": "SLv0以上 / 9行動毎", "req": {"type": "stat", "stat": "vit", "val": 30}, "effect": "[自]DEF増+[味全]守増＆保護"}, {"name": "快癒", "trigger": "戦闘開始時", "req": {"type": "stat", "stat": "mnd", "val": 5}, "effect": "[自]MND増＆祝福"}, {"name": "グリム", "trigger": "SLv0以上 / 9行動毎", "req": {"type": "stat", "stat": "mnd", "val": 5}, "effect": "[自]MND増＆保護"}, {"name": "ワイドヒール", "trigger": "SLv0以上 / 5行動毎", "req": {"type": "stat", "stat": "mnd", "val": 10}, "effect": "[味全]加護＆★回復"}, {"name": "レストレーション", "trigger": "ターン開始時", "req": {"type": "stat", "stat": "mnd", "val": 10}, "effect": "[弱味2]治癒＆★回復"}, {"name": "ハイヒール", "trigger": "SLv0以上 / 4行動毎", "req": {"type": "stat", "stat": "mnd", "val": 15}, "effect": "[弱味/3回]★回復＆良性変調"}, {"name": "スピリティア", "trigger": "自分行動前", "req": {"type": "stat", "stat": "mnd", "val": 20}, "effect": "[自]祝福+[弱味]★回復"}, {"name": "セイクリッド", "trigger": "SLv0以上 / 7行動毎", "req": {"type": "stat", "stat": "mnd", "val": 25}, "effect": "[味全]祝福+[弱味/2回]★回復"}, {"name": "ソルネーション", "trigger": "SLv0以上 / 9行動毎", "req": {"type": "stat", "stat": "mnd", "val": 30}, "effect": "[自]MND増+[弱味/2回]★回復"}, {"name": "業運", "trigger": "戦闘開始時", "req": {"type": "stat", "stat": "luk", "val": 5}, "effect": "[自]LUK増＆加護"}, {"name": "マリス", "trigger": "SLv0以上 / 9行動毎", "req": {"type": "stat", "stat": "luk", "val": 5}, "effect": "[自]LUK増＆保護"}, {"name": "ノクターン", "trigger": "SLv0以上 / 5行動毎", "req": {"type": "stat", "stat": "luk", "val": 10}, "effect": "[自]LUK増+[敵3]悪性変調+[乱味2]良性変調"}, {"name": "アンラッキー", "trigger": "ターン開始時", "req": {"type": "stat", "stat": "luk", "val": 10}, "effect": "[乱敵2]LUK減+[敵/2回]悪性変調"}, {"name": "カオス", "trigger": "SLv0以上 / 4行動毎", "req": {"type": "stat", "stat": "luk", "val": 15}, "effect": "[敵全/2回]悪性変調"}, {"name": "ゲニウス", "trigger": "ターン終了前", "req": {"type": "stat", "stat": "luk", "val": 20}, "effect": "[敵全]保護なら悪性変調+[敵]悪性変調"}, {"name": "ヘリテージ", "trigger": "SLv0以上 / 7行動毎", "req": {"type": "stat", "stat": "luk", "val": 25}, "effect": "[乱味3/2回]良性変調+[敵2/3回]悪性変調＆阻害"}, {"name": "クラウン", "trigger": "SLv0以上 / 9行動毎", "req": {"type": "stat", "stat": "luk", "val": 30}, "effect": "[自]LUK増+[敵/3回]悪性変調+[乱味3]良性変調"}, {"name": "神速", "trigger": "戦闘開始時", "req": {"type": "multiStat", "stats": {"atk": 5, "agi": 5}}, "effect": "[自]ATK増+[味全]連続増"}, {"name": "ファストアタック", "trigger": "ターン開始時", "req": {"type": "multiStat", "stats": {"atk": 5, "agi": 5}}, "effect": "[敵]★攻撃+[自]連続増"}, {"name": "ヴィテス", "trigger": "回避時", "req": {"type": "multiStat", "stats": {"atk": 10, "agi": 10}}, "effect": "[自]速増+[敵]★疾撃"}, {"name": "カマイタチ", "trigger": "SLv0以上 / 5行動毎", "req": {"type": "multiStat", "stats": {"atk": 15, "agi": 15}}, "effect": "[敵/5回]★疾撃＆守減"}, {"name": "果敢", "trigger": "戦闘開始時", "req": {"type": "multiStat", "stats": {"atk": 5, "dex": 5}}, "effect": "[自]ATK増＆DEX増"}, {"name": "トゥデリッヒ", "trigger": "SLv0以上 / 5行動毎", "req": {"type": "multiStat", "stats": {"atk": 5, "dex": 5}}, "effect": "[自]祝福+[敵]★痛撃"}, {"name": "エンフォルク", "trigger": "ターン開始時", "req": {"type": "multiStat", "stats": {"atk": 10, "dex": 10}}, "effect": "[自]攻増でなければ攻増+[敵]★痛撃"}, {"name": "アクィラエ", "trigger": "与クリティカル前", "req": {"type": "multiStat", "stats": {"atk": 15, "dex": 15}}, "effect": "[味全]祝福でなければ祝福+[自]次与ダメ増"}, {"name": "鉄壁", "trigger": "戦闘開始時", "req": {"type": "multiStat", "stats": {"atk": 5, "vit": 5}}, "effect": "[味全]DEF増＆次被ダメ減+[自]HATE増"}, {"name": "フェアラット", "trigger": "ターン開始時", "req": {"type": "multiStat", "stats": {"atk": 5, "vit": 5}}, "effect": "[敵]呪縛＆★反撃"}, {"name": "オルカーン", "trigger": "被攻撃前", "req": {"type": "multiStat", "stats": {"atk": 10, "vit": 10}}, "effect": "[自]祝福+[敵]★反撃"}, {"name": "アングリファー", "trigger": "SLv0以上 / 4行動毎", "req": {"type": "multiStat", "stats": {"atk": 15, "vit": 15}}, "effect": "[自]攻増でなければ攻増＆守増+[敵]★反撃"}, {"name": "瞑想", "trigger": "戦闘開始時", "req": {"type": "multiStat", "stats": {"atk": 5, "mnd": 5}}, "effect": "[自]ATK増＆MND増"}, {"name": "ヴァジュラ", "trigger": "SLv0以上 / 7行動毎", "req": {"type": "multiStat", "stats": {"atk": 5, "mnd": 5}}, "effect": "[敵]★攻撃＆阻害+[弱味]★回復＆保護"}, {"name": "オーシュタ", "trigger": "SLv1以上 / 通常時", "req": {"type": "multiStat", "stats": {"atk": 10, "mnd": 10}}, "effect": "[敵]★攻撃+[弱味]★回復+[自]保護"}, {"name": "ヤナトラ", "trigger": "与回復後", "req": {"type": "multiStat", "stats": {"atk": 15, "mnd": 15}}, "effect": "[敵]★攻撃＆阻害＆悪性変調"}, {"name": "好機", "trigger": "戦闘開始時", "req": {"type": "multiStat", "stats": {"atk": 5, "luk": 5}}, "effect": "[自]ATK増+[味全]LUK増"}, {"name": "ファターレ", "trigger": "SLv0以上 / 7行動毎", "req": {"type": "multiStat", "stats": {"atk": 5, "luk": 5}}, "effect": "[弱敵]★攻撃＆猛毒+[弱敵]対象の悪性変調が7以上なら★痛撃＆凍結"}, {"name": "ペリコーロ", "trigger": "SLv0以上 / 5行動毎", "req": {"type": "multiStat", "stats": {"atk": 10, "luk": 10}}, "effect": "[敵2]★攻撃＆猛毒+[弱敵]対象の猛毒が5以上なら★攻撃＆呪縛"}, {"name": "レウシット", "trigger": "ターン開始時", "req": {"type": "multiStat", "stats": {"atk": 15, "luk": 15}}, "effect": "[敵全]対象の悪性変調が10以下なら★攻撃＆猛毒"}, {"name": "巧妙", "trigger": "戦闘開始時", "req": {"type": "multiStat", "stats": {"agi": 5, "dex": 5}}, "effect": "[自]DEX増＆AGI増"}, {"name": "ヴィエント", "trigger": "SLv1以上 / 通常時", "req": {"type": "multiStat", "stats": {"agi": 5, "dex": 5}}, "effect": "[味全]粗雑良性変調+[自]粗雑良性変調＆連続増"}, {"name": "ラングザム", "trigger": "SLv0以上 / 7行動毎", "req": {"type": "multiStat", "stats": {"agi": 10, "dex": 10}}, "effect": "[敵全]粗雑悪性変調＆連続減+[味全]粗雑良性変調＆連続増"}, {"name": "シュツルム", "trigger": "自分行動前", "req": {"type": "multiStat", "stats": {"agi": 15, "dex": 15}}, "effect": "[味全]粗雑良性変調＆連続増+[敵全]対象の連続値が50以上なら連続減"}, {"name": "機敏", "trigger": "戦闘開始時", "req": {"type": "multiStat", "stats": {"agi": 5, "vit": 5}}, "effect": "[自]AGI増＆DEF増"}, {"name": "エトワール", "trigger": "被攻撃前", "req": {"type": "multiStat", "stats": {"agi": 5, "vit": 5}}, "effect": "[自]速増＆次被ダメ減＆連続増"}, {"name": "デニシュ", "trigger": "回避時", "req": {"type": "multiStat", "stats": {"agi": 10, "vit": 10}}, "effect": "[味全]加護でなければ加護+[自]守増＆AGI増"}, {"name": "アンドルミ", "trigger": "SLv0以上 / 5行動毎", "req": {"type": "multiStat", "stats": {"agi": 15, "vit": 15}}, "effect": "[自]速増＆守増＆連続増+[味全]保護"}, {"name": "神祇", "trigger": "戦闘開始時", "req": {"type": "multiStat", "stats": {"agi": 5, "mnd": 5}}, "effect": "[自]MND増+[敵全]阻害"}, {"name": "ルミエール", "trigger": "与回復後", "req": {"type": "multiStat", "stats": {"agi": 5, "mnd": 5}}, "effect": "[弱味]治癒＆連続増"}, {"name": "エクレール", "trigger": "自分行動前", "req": {"type": "multiStat", "stats": {"agi": 10, "mnd": 10}}, "effect": "[弱味2]★回復＆速増＆連続増"}, {"name": "デズィル", "trigger": "SLv0以上 / 4行動毎", "req": {"type": "multiStat", "stats": {"agi": 15, "mnd": 15}}, "effect": "[弱味3]治癒＆速増＆★回復"}, {"name": "歩先", "trigger": "戦闘開始時", "req": {"type": "multiStat", "stats": {"agi": 5, "luk": 5}}, "effect": "[自]AGI増+[自]LUK増"}, {"name": "ピノワール", "trigger": "ターン開始時", "req": {"type": "multiStat", "stats": {"agi": 5, "luk": 5}}, "effect": "[乱敵]悪性変調+[乱味2]平穏＆連続増"}, {"name": "エグジスト", "trigger": "SLv0以上 / 7行動毎", "req": {"type": "multiStat", "stats": {"agi": 10, "luk": 10}}, "effect": "[味全]速増＆平穏+[敵全]速減＆阻害"}, {"name": "エンライト", "trigger": "自分行動前", "req": {"type": "multiStat", "stats": {"agi": 15, "luk": 15}}, "effect": "[乱敵2]速減+[乱味2]良性変調"}, {"name": "地久", "trigger": "戦闘開始時", "req": {"type": "multiStat", "stats": {"dex": 5, "vit": 5}}, "effect": "[自]DEX増+[味全]MHP増"}, {"name": "レソリュート", "trigger": "自分行動前", "req": {"type": "multiStat", "stats": {"dex": 5, "vit": 5}}, "effect": "[味全]粗雑良性変調＆次被ダメ減"}, {"name": "ナルサック", "trigger": "SLv0以上 / 4行動毎", "req": {"type": "multiStat", "stats": {"dex": 10, "vit": 10}}, "effect": "[味全]粗雑良性変調＆治癒＆MHP増"}, {"name": "キクタアルク", "trigger": "ターン開始時", "req": {"type": "multiStat", "stats": {"dex": 15, "vit": 15}}, "effect": "[味全]粗雑良性変調＆MHP増"}, {"name": "処置", "trigger": "戦闘開始時", "req": {"type": "multiStat", "stats": {"dex": 5, "mnd": 5}}, "effect": "[自]DEX増＆MND増"}, {"name": "ショックヒール", "trigger": "SLv0以上 / 味方重傷時", "req": {"type": "multiStat", "stats": {"dex": 5, "mnd": 5}}, "effect": "[弱味/2回]粗雑攻撃＆★回復＆平穏"}, {"name": "アバランチ", "trigger": "自分行動前", "req": {"type": "multiStat", "stats": {"dex": 10, "mnd": 10}}, "effect": "[弱味]粗雑攻撃＆★回復＆祝福"}, {"name": "コラプス", "trigger": "SLv0以上 / 5行動毎", "req": {"type": "multiStat", "stats": {"dex": 15, "mnd": 15}}, "effect": "[味全/2回]粗雑良性変調＆★回復"}, {"name": "天理", "trigger": "戦闘開始時", "req": {"type": "multiStat", "stats": {"dex": 5, "luk": 5}}, "effect": "[自]DEX増+[味全]LUK増"}, {"name": "インヒューズ", "trigger": "ターン終了前", "req": {"type": "multiStat", "stats": {"dex": 5, "luk": 5}}, "effect": "[乱味]粗雑良性変調+[乱敵]粗雑悪性変調＆阻害"}, {"name": "バクスティラ", "trigger": "SLv1以上 / 通常時", "req": {"type": "multiStat", "stats": {"dex": 10, "luk": 10}}, "effect": "[弱敵]★痛撃＆阻害+[弱敵2]粗雑悪性変調＆阻害"}, {"name": "カティラ", "trigger": "与クリティカル前", "req": {"type": "multiStat", "stats": {"dex": 15, "luk": 15}}, "effect": "[弱敵]次被ダメ増＆守減＆呪縛"}, {"name": "防備", "trigger": "戦闘開始時", "req": {"type": "multiStat", "stats": {"vit": 5, "mnd": 5}}, "effect": "[味全]DEF増＆保護"}, {"name": "オートヒール", "trigger": "被攻撃後", "req": {"type": "multiStat", "stats": {"vit": 5, "mnd": 5}}, "effect": "[自]★回復+[弱味]治癒"}, {"name": "ワイドケア", "trigger": "SLv0以上 / 7行動毎", "req": {"type": "multiStat", "stats": {"vit": 10, "mnd": 10}}, "effect": "[味全]守増＆良性変調+[弱味/2回]★回復＆治癒"}, {"name": "エクスキュア", "trigger": "SLv0以上 / 味方重傷時", "req": {"type": "multiStat", "stats": {"vit": 15, "mnd": 15}}, "effect": "[弱味]治癒＆守増＆★回復"}, {"name": "守護", "trigger": "戦闘開始時", "req": {"type": "multiStat", "stats": {"vit": 5, "luk": 5}}, "effect": "[味全]DEF増＆LUK増"}, {"name": "リアクト", "trigger": "ターン終了前", "req": {"type": "multiStat", "stats": {"vit": 5, "luk": 5}}, "effect": "[乱味2]保護+[堅味]守増"}, {"name": "アドバンス", "trigger": "SLv0以上 / 7行動毎", "req": {"type": "multiStat", "stats": {"vit": 10, "luk": 10}}, "effect": "[敵全]呪縛＆阻害+[味全]祝福＆保護"}, {"name": "リバーサル", "trigger": "ターン開始時", "req": {"type": "multiStat", "stats": {"vit": 15, "luk": 15}}, "effect": "[乱敵]悪性変調＆阻害+[堅味]治癒＆保護"}, {"name": "祈祷", "trigger": "戦闘開始時", "req": {"type": "multiStat", "stats": {"mnd": 5, "luk": 5}}, "effect": "[自]MND増+[味全]LUK増"}, {"name": "チェインヒール", "trigger": "与回復後", "req": {"type": "multiStat", "stats": {"mnd": 5, "luk": 5}}, "effect": "[弱味]★回復＆治癒"}, {"name": "シクレツァー", "trigger": "SLv0以上 / 4行動毎", "req": {"type": "multiStat", "stats": {"mnd": 10, "luk": 10}}, "effect": "[味全]★回復＆保護＆良性変調"}, {"name": "セーフティ", "trigger": "SLv0以上 / 通常時", "req": {"type": "multiStat", "stats": {"mnd": 15, "luk": 15}}, "effect": "[弱味2]良性変調＆回復"}, {"name": "ヴェノム", "trigger": "ターン開始時", "req": {"type": "book", "book": "猛毒"}, "effect": "[敵/2回]猛毒"}, {"name": "ポイズン", "trigger": "ターン終了前", "req": {"type": "book", "book": "猛毒"}, "effect": "[敵2]猛毒"}, {"name": "ディケイ", "trigger": "戦闘開始時", "req": {"type": "book", "book": "猛毒"}, "effect": "[敵全]対象の猛毒が7以下なら猛毒"}, {"name": "アンブッシュ", "trigger": "被攻撃後", "req": {"type": "book", "book": "猛毒", "role": "TANK"}, "effect": "[乱敵2]猛毒"}, {"name": "アシッド", "trigger": "与ダメ後", "req": {"type": "book", "book": "猛毒", "role": "DPS"}, "effect": "[乱敵2]猛毒"}, {"name": "バイオ", "trigger": "与回復後", "req": {"type": "book", "book": "猛毒", "role": "HEAL"}, "effect": "[乱敵2]猛毒"}, {"name": "トキシック", "trigger": "自分行動前", "req": {"type": "book", "book": "猛毒", "role": "SUP"}, "effect": "[敵/2回]猛毒"}, {"name": "コールド", "trigger": "ターン開始時", "req": {"type": "book", "book": "凍結"}, "effect": "[敵/2回]凍結"}, {"name": "グラシア", "trigger": "ターン終了前", "req": {"type": "book", "book": "凍結"}, "effect": "[敵2]凍結"}, {"name": "フリーズ", "trigger": "戦闘開始時", "req": {"type": "book", "book": "凍結"}, "effect": "[敵全]対象の凍結が7以下なら凍結"}, {"name": "フロスト", "trigger": "被攻撃後", "req": {"type": "book", "book": "凍結", "role": "TANK"}, "effect": "[乱敵2]凍結"}, {"name": "チルド", "trigger": "与ダメ後", "req": {"type": "book", "book": "凍結", "role": "DPS"}, "effect": "[乱敵2]凍結"}, {"name": "アイシー", "trigger": "与回復後", "req": {"type": "book", "book": "凍結", "role": "HEAL"}, "effect": "[乱敵2]凍結"}, {"name": "スノウドロップ", "trigger": "自分行動前", "req": {"type": "book", "book": "凍結", "role": "SUP"}, "effect": "[敵/2回]凍結"}, {"name": "カーズ", "trigger": "ターン開始時", "req": {"type": "book", "book": "呪縛"}, "effect": "[敵/2回]呪縛"}, {"name": "フルーフ", "trigger": "ターン終了前", "req": {"type": "book", "book": "呪縛"}, "effect": "[敵2]呪縛"}, {"name": "ディゾルブ", "trigger": "戦闘開始時", "req": {"type": "book", "book": "呪縛"}, "effect": "[敵全]対象の呪縛が7以下なら呪縛"}, {"name": "ナフリーン", "trigger": "被攻撃後", "req": {"type": "book", "book": "呪縛", "role": "TANK"}, "effect": "[乱敵2]呪縛"}, {"name": "ラアーナ", "trigger": "与ダメ後", "req": {"type": "book", "book": "呪縛", "role": "DPS"}, "effect": "[乱敵2]呪縛"}, {"name": "ラーネット", "trigger": "与回復後", "req": {"type": "book", "book": "呪縛", "role": "HEAL"}, "effect": "[乱敵2]呪縛"}, {"name": "ネクロ", "trigger": "自分行動前", "req": {"type": "book", "book": "呪縛", "role": "SUP"}, "effect": "[敵/2回]呪縛"}, {"name": "パラライズ", "trigger": "ターン開始時", "req": {"type": "book", "book": "麻痺"}, "effect": "[敵/2回]麻痺"}, {"name": "ショック", "trigger": "ターン終了前", "req": {"type": "book", "book": "麻痺"}, "effect": "[敵2]麻痺"}, {"name": "ジャミング", "trigger": "戦闘開始時", "req": {"type": "book", "book": "麻痺"}, "effect": "[敵全]対象の麻痺が7以下なら麻痺"}, {"name": "スタティック", "trigger": "被攻撃後", "req": {"type": "book", "book": "麻痺", "role": "TANK"}, "effect": "[乱敵2]麻痺"}, {"name": "スタンウェーブ", "trigger": "与ダメ後", "req": {"type": "book", "book": "麻痺", "role": "DPS"}, "effect": "[乱敵2]麻痺"}, {"name": "スイナ", "trigger": "与回復後", "req": {"type": "book", "book": "麻痺", "role": "HEAL"}, "effect": "[乱敵2]麻痺"}, {"name": "レームング", "trigger": "自分行動前", "req": {"type": "book", "book": "麻痺", "role": "SUP"}, "effect": "[敵/2回]麻痺"}, {"name": "エイド", "trigger": "ターン開始時", "req": {"type": "book", "book": "治癒"}, "effect": "[乱味/2回]治癒"}, {"name": "リカバー", "trigger": "ターン終了前", "req": {"type": "book", "book": "治癒"}, "effect": "[味2]治癒"}, {"name": "プラヴィア", "trigger": "戦闘開始時", "req": {"type": "book", "book": "治癒"}, "effect": "[味全]対象の治癒が7以下なら治癒"}, {"name": "トリート", "trigger": "被攻撃後", "req": {"type": "book", "book": "治癒", "role": "TANK"}, "effect": "[乱味2]治癒"}, {"name": "ハイレン", "trigger": "与ダメ後", "req": {"type": "book", "book": "治癒", "role": "DPS"}, "effect": "[乱味2]治癒"}, {"name": "メディカ", "trigger": "与回復後", "req": {"type": "book", "book": "治癒", "role": "HEAL"}, "effect": "[乱味2]治癒"}, {"name": "ライフケア", "trigger": "自分行動前", "req": {"type": "book", "book": "治癒", "role": "SUP"}, "effect": "[乱味/2回]治癒"}, {"name": "カーム", "trigger": "ターン開始時", "req": {"type": "book", "book": "平穏"}, "effect": "[乱味/2回]平穏"}, {"name": "ピースフル", "trigger": "ターン終了前", "req": {"type": "book", "book": "平穏"}, "effect": "[味2]平穏"}, {"name": "セニティ", "trigger": "戦闘開始時", "req": {"type": "book", "book": "平穏"}, "effect": "[味全]対象の平穏が7以下なら平穏"}, {"name": "ルグン", "trigger": "被攻撃後", "req": {"type": "book", "book": "平穏", "role": "TANK"}, "effect": "[乱味2]平穏"}, {"name": "ベルヒゲン", "trigger": "与ダメ後", "req": {"type": "book", "book": "平穏", "role": "DPS"}, "effect": "[乱味2]平穏"}, {"name": "パシフィー", "trigger": "与回復後", "req": {"type": "book", "book": "平穏", "role": "HEAL"}, "effect": "[乱味2]平穏"}, {"name": "テューニ", "trigger": "自分行動前", "req": {"type": "book", "book": "平穏", "role": "SUP"}, "effect": "[乱味/2回]平穏"}, {"name": "ブレス", "trigger": "ターン開始時", "req": {"type": "book", "book": "祝福"}, "effect": "[乱味/2回]祝福"}, {"name": "オラクル", "trigger": "ターン終了前", "req": {"type": "book", "book": "祝福"}, "effect": "[味2]祝福"}, {"name": "サバス", "trigger": "戦闘開始時", "req": {"type": "book", "book": "祝福"}, "effect": "[味全]対象の祝福が7以下なら祝福"}, {"name": "バラカ", "trigger": "被攻撃後", "req": {"type": "book", "book": "祝福", "role": "TANK"}, "effect": "[乱味2]祝福"}, {"name": "アシルワド", "trigger": "与ダメ後", "req": {"type": "book", "book": "祝福", "role": "DPS"}, "effect": "[乱味2]祝福"}, {"name": "シウナス", "trigger": "与回復後", "req": {"type": "book", "book": "祝福", "role": "HEAL"}, "effect": "[乱味2]祝福"}, {"name": "エウロギア", "trigger": "自分行動前", "req": {"type": "book", "book": "祝福", "role": "SUP"}, "effect": "[乱味/2回]祝福"}, {"name": "ディバイン", "trigger": "ターン開始時", "req": {"type": "book", "book": "加護"}, "effect": "[乱味/2回]加護"}, {"name": "セイント", "trigger": "ターン終了前", "req": {"type": "book", "book": "加護"}, "effect": "[味2]加護"}, {"name": "エデン", "trigger": "戦闘開始時", "req": {"type": "book", "book": "加護"}, "effect": "[味全]対象の加護が7以下なら加護"}, {"name": "エイジス", "trigger": "被攻撃後", "req": {"type": "book", "book": "加護", "role": "TANK"}, "effect": "[乱味2]加護"}, {"name": "グローリー", "trigger": "与ダメ後", "req": {"type": "book", "book": "加護", "role": "DPS"}, "effect": "[乱味2]加護"}, {"name": "セラフィー", "trigger": "与回復後", "req": {"type": "book", "book": "加護", "role": "HEAL"}, "effect": "[乱味2]加護"}, {"name": "アーク", "trigger": "自分行動前", "req": {"type": "book", "book": "加護", "role": "SUP"}, "effect": "[乱味/2回]加護"}];
+const CATEGORIES = {"none": "基本スキル", "role": "ロールスキル", "stat": "ステータススキル", "multiStat": "複合ステータススキル", "book": "スキルブックスキル"};
+const STATS_LABEL = {"atk": "攻撃", "agi": "敏捷", "dex": "器用", "vit": "生命", "mnd": "精神", "luk": "幸運"};
+const BOOK_LIST = ["猛毒", "凍結", "呪縛", "麻痺", "治癒", "平穏", "祝福", "加護"];
+
+let role = "";
+let stats = {atk:0, agi:0, dex:0, vit:0, mnd:0, luk:0};
+let books = [];
+let equipped = [];
+let modalOpen = false;
+
+const esc = s => String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const getLearnable = () => SKILLS.filter(skill => {
+  const r = skill.req || {};
+  if (r.type === "none") return true;
+  if (r.type === "role") return role === r.role;
+  if (r.type === "stat") return stats[r.stat] >= r.val;
+  if (r.type === "multiStat") return Object.entries(r.stats).every(([k,v]) => stats[k] >= v);
+  if (r.type === "book") return books.includes(r.book) && (!r.role || r.role === role);
+  return false;
+});
+
+function setStat(k,v){ stats[k] = Math.max(0, parseInt(v,10) || 0); render(); }
+function toggleBook(b){ books = books.includes(b) ? books.filter(x=>x!==b) : [...books,b]; render(); }
+function removeSkill(name){ equipped = equipped.filter(s=>s.name!==name); render(); }
+function toggleSkill(skill){
+  if(equipped.some(s=>s.name===skill.name)){ removeSkill(skill.name); return; }
+  if(equipped.length >= 12) return;
+  equipped = [...equipped, skill];
+  render();
+}
+function openModal(){modalOpen=true; renderModal();}
+function closeModal(){modalOpen=false; renderModal();}
+
+function render(){
+  const learnable = getLearnable();
+  const groups = {none:[],role:[],stat:[],multiStat:[],book:[]};
+  learnable.forEach(s => groups[s.req.type].push(s));
+  document.getElementById("app").innerHTML = `
+    <aside class="left panel">
+      <div class="brand"><span>⚙</span><h2>ビルド設定</h2></div>
+      <div class="section">
+        <h3>ロール</h3>
+        <select id="role-select">
+          <option value="">なし</option>
+          ${["TANK","DPS","HEAL","SUP"].map(x=>`<option value="${x}" ${role===x?"selected":""}>${x}</option>`).join("")}
+        </select>
+      </div>
+      <div class="section">
+        <h3>ステータス</h3>
+        <div class="stat-grid">
+          ${Object.keys(STATS_LABEL).map(k=>`
+            <div class="stat"><label>${STATS_LABEL[k]}</label>
+              <input class="stat-input" type="number" min="0" value="${stats[k]}" data-stat="${k}">
+            </div>`).join("")}
+        </div>
+      </div>
+      <div class="section">
+        <h3>スキルブック</h3>
+        <div class="book-grid">
+          ${BOOK_LIST.map(b=>`<label class="book"><input type="checkbox" data-book="${esc(b)}" ${books.includes(b)?"checked":""}><span>${esc(b)}</span></label>`).join("")}
+        </div>
+      </div>
+      <div class="bottom-action">
+        <button class="btn secondary" id="summary-btn">☷　現在のビルドを確認する</button>
+      </div>
+    </aside>
+
+    <main class="center panel">
+      <div class="header"><h2>習得可能なスキル</h2><span class="count">${learnable.length} 件</span></div>
+      ${Object.entries(CATEGORIES).map(([key,name])=>{
+        const list=groups[key];
+        if(!list.length) return "";
+        return `<section class="category"><h3 class="category-title">${name}</h3>
+          <div class="skill-grid">${list.map(skillCard).join("")}</div></section>`;
+      }).join("")}
+      ${!learnable.length ? `<div class="empty">ⓘ<br>条件を満たすスキルがありません。<br>左のパネルからステータス等を設定してください。</div>` : ""}
+    </main>
+
+    <aside class="right panel">
+      <div class="right-header"><h2>セットしたスキル</h2><span class="slot-count ${equipped.length===12?"full":""}">${equipped.length} / 12</span></div>
+      <div class="slots">${Array.from({length:12},(_,i)=>{
+        const s=equipped[i];
+        return s ? `<div class="equipped-slot"><div class="name">${esc(s.name)}</div><div class="effect">${esc(s.effect)}</div><button class="remove-x" data-remove="${esc(s.name)}" title="解除する">×</button></div>`
+                  : `<div class="slot"><span class="slot-num">SLOT ${i+1}</span></div>`;
+      }).join("")}</div>
+      <div class="clear"><button id="clear-btn" ${equipped.length?"":"disabled"}>×　すべて外す</button></div>
+    </aside>
+
+    <button class="mobile-summary" id="mobile-summary" aria-label="現在のビルドを確認">☷</button>
+  `;
+  document.getElementById("role-select").onchange = e => {role=e.target.value;render();};
+  document.querySelectorAll("[data-stat]").forEach(el=>el.onchange=e=>setStat(e.target.dataset.stat,e.target.value));
+  document.querySelectorAll("[data-book]").forEach(el=>el.onchange=()=>toggleBook(el.dataset.book));
+  document.querySelectorAll("[data-skill]").forEach(el=>el.onclick=()=>toggleSkill(SKILLS.find(s=>s.name===el.dataset.skill)));
+  document.querySelectorAll("[data-remove]").forEach(el=>el.onclick=()=>removeSkill(el.dataset.remove));
+  document.getElementById("clear-btn").onclick=()=>{equipped=[];render();};
+  document.getElementById("summary-btn").onclick=openModal;
+  document.getElementById("mobile-summary").onclick=openModal;
+}
+
+function skillCard(skill){
+  const isEquipped=equipped.some(s=>s.name===skill.name);
+  const full=!isEquipped && equipped.length>=12;
+  return `<div class="skill-card ${isEquipped?"equipped":""}">
+    <div class="skill-top"><div class="skill-name">${esc(skill.name)}</div>${isEquipped?'<span class="set-badge">✓ セット中</span>':""}</div>
+    <div class="trigger">${esc(skill.trigger)}</div>
+    <div class="effect">${esc(skill.effect)}</div>
+    <button class="${isEquipped?"remove":"add"}" data-skill="${esc(skill.name)}" ${full?"disabled":""}>${isEquipped?"外す":"セットする"}</button>
+  </div>`;
+}
+
+function renderModal(){
+  const root=document.getElementById("modal-root");
+  if(!modalOpen){root.innerHTML="";return;}
+  root.innerHTML=`<div class="modal-backdrop" id="backdrop">
+    <div class="modal">
+      <div class="modal-head"><h2>☷　現在のビルド確認</h2><button class="close" id="close-modal">×</button></div>
+      <div class="modal-body">
+        <div class="summary-grid">
+          <div>
+            <div class="summary-box"><h3>基本設定</h3>
+              <div class="row"><span>ロール</span><span class="tag">${esc(role||"未設定")}</span></div>
+              <div style="font-size:13px;color:#64748b;margin:16px 0 7px">選択中のスキルブック</div>
+              ${books.length?`<div class="tags">${books.map(b=>`<span class="book-tag">${esc(b)}</span>`).join("")}</div>`:'<span style="font-size:13px;color:#94a3b8;font-style:italic">なし</span>'}
+            </div>
+            <div class="summary-box"><h3>ステータス</h3>
+              ${Object.entries(STATS_LABEL).map(([k,l])=>`<div class="row"><span style="color:#64748b">${l}</span><b style="background:#f1f5f9;padding:2px 7px;border-radius:5px">${stats[k]}</b></div>`).join("")}
+            </div>
+          </div>
+          <div class="summary-box" style="margin-bottom:0"><h3 style="display:flex;justify-content:space-between">セットしたスキル <span class="tag">${equipped.length} / 12 枠</span></h3>
+            ${equipped.length?`<div class="summary-skills">${equipped.map(s=>`<div class="summary-skill"><b>${esc(s.name)}</b><div>${esc(s.trigger)}</div><span>${esc(s.effect)}</span></div>`).join("")}</div>`:`<div class="empty" style="padding:50px 10px">ⓘ<br>スキルがセットされていません</div>`}
+          </div>
+        </div>
+      </div>
+      <div class="modal-foot"><button class="btn primary" id="close-modal-2">閉じる</button></div>
+    </div>
+  </div>`;
+  document.getElementById("close-modal").onclick=closeModal;
+  document.getElementById("close-modal-2").onclick=closeModal;
+  document.getElementById("backdrop").onclick=e=>{if(e.target.id==="backdrop")closeModal();};
+}
+render();
+</script>
+</body>
+</html>
