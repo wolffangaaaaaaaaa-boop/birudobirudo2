@@ -570,10 +570,9 @@ const updatePointCard = () => {
   const totalEl = document.getElementById("total-pt");
   const consumedEl = document.getElementById("consumed-pt");
 
-  if (remainingEl) {
-    remainingEl.textContent = `${remaining} PT`;
-    remainingEl.classList.toggle("warning", remaining < 0);
-  }
+if (remainingEl) {
+  remainingEl.textContent = `${remaining} PT`;
+}
   if (totalEl) totalEl.textContent = `${pts.total} PT`;
   if (consumedEl) consumedEl.textContent = `${totalPt} PT`;
 
@@ -730,28 +729,22 @@ const getLearnable = () => SKILLS.filter(skill => {
 
 function setStat(k,v){
   const nextValue = Math.max(0, parseInt(v,10) || 0);
-  if (!canAffordStatValue(k, nextValue)) {
-    showToast("⚠️ ステータスポイントが不足しています");
-    render();
-    return;
-  }
   stats[k] = nextValue;
   render();
 }
+
+
 function toggleBook(b){ books = books.includes(b) ? books.filter(x=>x!==b) : [...books,b]; render(); }
 function removeSkill(name){ equipped = equipped.filter(s=>s.name!==name); render(); }
+
 function toggleSkill(skill){
   if(equipped.some(s=>s.name===skill.name)){ removeSkill(skill.name); return; }
   if(equipped.length >= 12) return;
 
-  if (!canAffordNextSlot()) {
-    showToast("⚠️ スキル枠拡張のポイントが不足しています");
-    return;
-  }
-
   equipped = [...equipped, skill];
   render();
 }
+
 function openModal(tab = "summary"){ modalTab = tab; modalOpen = true; renderModal(); }
 function closeModal(){ modalOpen = false; renderModal(); }
 
@@ -852,9 +845,6 @@ function render(){
 
       <div class="section">
         <h3>ステータス (1ptにつき 3 PT消費)</h3>
-        <div style="font-size:11px;color:var(--slate-400);margin:-3px 0 8px">
-          所持ポイントの範囲内で割り振れます
-        </div>
         <div class="stat-grid">
           ${Object.keys(STATS_LABEL).map(k=>`
             <div class="stat"><label>${STATS_LABEL[k]}</label>
@@ -1166,3 +1156,4 @@ window.onload = function() {
 </script>
 </body>
 </html>
+
