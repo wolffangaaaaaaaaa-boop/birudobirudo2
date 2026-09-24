@@ -130,10 +130,16 @@ select:focus,.stat-input:focus,.search-input:focus{border-color:#818cf8;box-shad
 
 .mobile-summary{display:none}
 .modal-backdrop{position:fixed;inset:0;background:#0009;z-index:50;display:flex;align-items:center;justify-content:center;padding:16px;backdrop-filter:blur(4px)}
-.modal{background:white;border-radius:14px;width:min(900px,100%);max-height:90vh;display:flex;flex-direction:column;box-shadow:0 25px 60px #0004;overflow:hidden}
+.modal{background:white;border-radius:14px;width:min(950px,100%);max-height:92vh;display:flex;flex-direction:column;box-shadow:0 25px 60px #0004;overflow:hidden}
 .modal-head{display:flex;justify-content:space-between;align-items:center;padding:16px 20px;border-bottom:1px solid var(--slate-200);background:var(--slate-50)}
 .modal-head h2{margin:0;font-size:18px;font-weight:800}.close{border:0;background:transparent;color:var(--slate-400);font-size:24px;cursor:pointer}.close:hover{color:var(--slate-700)}
-.modal-body{padding:20px;overflow:auto;background:var(--slate-100)}
+
+/* モーダル内タブ切り替えスタイル */
+.modal-tabs{display:flex;background:var(--slate-200);padding:4px;border-radius:10px;margin-bottom:16px;gap:4px}
+.tab-btn{flex:1;padding:10px 14px;border:0;background:transparent;font-size:13px;font-weight:800;color:var(--slate-600);border-radius:8px;cursor:pointer;transition:all 0.15s;display:flex;align-items:center;justify-content:center;gap:6px}
+.tab-btn.active{background:white;color:var(--indigo);box-shadow:0 2px 6px rgba(0,0,0,0.08)}
+
+.modal-body{padding:20px;overflow:auto;background:var(--slate-100);flex:1}
 .summary-grid{display:grid;grid-template-columns:1fr 2fr;gap:16px}
 .summary-box{background:white;border:1px solid var(--slate-200);border-radius:10px;padding:16px;box-shadow:0 1px 2px #00000008;margin-bottom:12px}
 .summary-box h3{font-size:14px;margin:0 0 12px;padding-bottom:8px;border-bottom:1px solid var(--slate-200);font-weight:800;color:var(--slate-700)}
@@ -142,6 +148,35 @@ select:focus,.stat-input:focus,.search-input:focus{border-color:#818cf8;box-shad
 .tags{display:flex;flex-wrap:wrap;gap:6px}
 .summary-skills{display:grid;grid-template-columns:1fr 1fr;gap:10px}
 .summary-skill{padding:10px 12px;border:1px solid #e0e7ff;background:#eef2ff55;border-radius:8px}.summary-skill b{color:#312e81;font-size:13px;display:block}.summary-skill div{font-size:11px;color:var(--indigo);margin:2px 0 4px;font-weight:700}.summary-skill span{font-size:12px;color:var(--slate-600);line-height:1.4;display:block}
+
+.sim-header-info{background:white;border:1px solid var(--slate-200);border-radius:10px;padding:12px 16px;margin-bottom:14px;font-size:12px;color:var(--slate-600);display:flex;flex-wrap:wrap;gap:12px;align-items:center;justify-content:space-between}
+.sim-legend{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.sim-table-container{background:white;border:1px solid var(--slate-200);border-radius:10px;overflow:hidden;box-shadow:0 1px 3px #00000008}
+.sim-table{width:100%;border-collapse:collapse;font-size:12px;text-align:left}
+.sim-table th{background:var(--slate-100);color:var(--slate-700);padding:10px 12px;font-weight:800;border-bottom:1px solid var(--slate-200);position:sticky;top:0;z-index:2}
+.sim-table td{padding:9px 12px;border-bottom:1px solid var(--slate-100);vertical-align:middle}
+.sim-row{transition:background 0.1s}
+.sim-row:hover{background:var(--slate-50)}
+.sim-row.slv-up-row{background:#f0f9ff;border-top:2px solid #0284c7}
+.sim-row.has-mult-4{background:#faf5ff}
+.sim-row.has-mult-7{background:#f0fdf4}
+.sim-row.has-mult-9{background:#fff7ed}
+
+.mult-badge{font-size:10px;font-weight:800;padding:2px 6px;border-radius:4px;display:inline-block;margin-right:3px}
+.mult-4{background:#f3e8ff;color:#7e22ce;border:1px solid #e9d5ff}
+.mult-7{background:#d1fae5;color:#047857;border:1px solid #a7f3d0}
+.mult-9{background:#ffedd5;color:#c2410c;border:1px solid #fed7aa}
+
+.slv-badge{font-size:10px;font-weight:800;padding:2px 7px;border-radius:999px;display:inline-block}
+.slv-0{background:#f1f5f9;color:#475569;border:1px solid #cbd5e1}
+.slv-1{background:#dbeafe;color:#1e40af;border:1px solid #bfdbfe}
+.slv-2{background:#e0e7ff;color:#3730a3;border:1px solid #c7d2fe}
+.slv-3{background:#fce7f3;color:#9d174d;border:1px solid #fbcfe8}
+
+.slv-up-tag{font-size:10px;font-weight:900;background:#0284c7;color:white;padding:2px 6px;border-radius:4px;margin-left:4px;letter-spacing:0.5px}
+.slot-badge{font-size:10px;font-weight:800;background:#334155;color:white;padding:2px 6px;border-radius:4px;margin-right:6px}
+.no-skill{color:var(--slate-400);font-style:italic}
+
 .modal-foot{padding:14px 20px;border-top:1px solid var(--slate-200);display:flex;justify-content:space-between;align-items:center;background:white}
 .toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);background:#0f172a;color:white;padding:10px 20px;border-radius:8px;font-size:13px;font-weight:700;box-shadow:0 10px 25px rgba(0,0,0,0.2);z-index:100;display:none}
 
@@ -443,6 +478,7 @@ const SKILLS = [
   {"name": "アーク", "trigger": "自分行動前", "req": {"type": "book", "book": "加護", "role": "SUP"}, "effect": "[乱味/2回]加護"}
 ];
 
+
 const CATEGORIES = {
   "none": "基本スキル", 
   "role": "ロールスキル", 
@@ -462,8 +498,100 @@ const STATS_LABEL = {
 
 const BOOK_LIST = ["猛毒", "凍結", "呪縛", "麻痺", "治癒", "平穏", "祝福", "加護"];
 
-// 各枠（1～12枠目）の消費コストテーブル（6枠目まで0PT、7枠目から35, 40, 45, 50, 60, 70）
 const SLOT_COSTS = [0, 0, 0, 0, 0, 0, 35, 40, 45, 50, 60, 70];
+
+// --- 時間経過によるステータスポイント配布 ---
+const INITIAL_POINTS = 30;
+const BASE_DATE_STR = "2026-09-12T18:00:00+09:00";
+const NORMAL_DIST_HOURS = 12;
+const NORMAL_DIST_POINTS = 3;
+const BONUS_DIST_DAYS = 7;
+const BONUS_DIST_POINTS = 20;
+
+const calculateDistributedPoints = () => {
+  const baseDate = new Date(BASE_DATE_STR).getTime();
+  const now = Date.now();
+
+  if (now < baseDate) {
+    return {
+      initial: INITIAL_POINTS,
+      distributed: 0,
+      total: INITIAL_POINTS,
+      nextUpdateMs: baseDate - now
+    };
+  }
+
+  const diffMs = now - baseDate;
+  const halfDayMs = NORMAL_DIST_HOURS * 60 * 60 * 1000;
+  const weekMs = BONUS_DIST_DAYS * 24 * 60 * 60 * 1000;
+
+  // 配布HTMLの仕様をそのまま維持：
+  // 基準日時を1回目の通常配布として +3pt
+  const normalCount = Math.floor(diffMs / halfDayMs) + 1;
+  const bonusCount = Math.floor(diffMs / weekMs);
+
+  const distributed =
+    normalCount * NORMAL_DIST_POINTS +
+    bonusCount * BONUS_DIST_POINTS;
+
+  const timeSinceLastNormal = diffMs % halfDayMs;
+
+  return {
+    initial: INITIAL_POINTS,
+    distributed,
+    total: INITIAL_POINTS + distributed,
+    nextUpdateMs: halfDayMs - timeSinceLastNormal
+  };
+};
+
+const getAvailablePoints = () => {
+  const { total } = calculateDistributedPoints();
+  const { totalPt } = getStatusPointSummary();
+  return total - totalPt;
+};
+
+const formatPointTimeLeft = (ms) => {
+  const totalSeconds = Math.max(0, Math.floor(ms / 1000));
+  const hours = Math.floor(totalSeconds / 3600);
+  const minutes = Math.floor((totalSeconds % 3600) / 60);
+  const seconds = totalSeconds % 60;
+  return `${hours}時間 ${minutes}分 ${seconds}秒`;
+};
+
+const updatePointCard = () => {
+  const card = document.getElementById("point-card");
+  if (!card) return;
+
+  const pts = calculateDistributedPoints();
+  const { statSum, statPt, slotPt, totalPt } = getStatusPointSummary();
+  const remaining = pts.total - totalPt;
+
+  const remainingEl = document.getElementById("remaining-pt");
+  const totalEl = document.getElementById("total-pt");
+  const consumedEl = document.getElementById("consumed-pt");
+
+  if (remainingEl) {
+    remainingEl.textContent = `${remaining} PT`;
+    remainingEl.classList.toggle("warning", remaining < 0);
+  }
+  if (totalEl) totalEl.textContent = `${pts.total} PT`;
+  if (consumedEl) consumedEl.textContent = `${totalPt} PT`;
+
+  const detailEl = document.getElementById("point-detail");
+  if (detailEl) {
+    detailEl.textContent =
+      `初期 ${pts.initial ?? INITIAL_POINTS} + 配布 ${pts.distributed} / ` +
+      `ステータス ${statPt} + 枠 ${slotPt}`;
+  }
+
+  const nextEl = document.getElementById("next-point");
+  if (nextEl) {
+    nextEl.textContent = pts.nextUpdateMs > 0
+      ? `次回通常配布 (+${NORMAL_DIST_POINTS} PT) まで: ${formatPointTimeLeft(pts.nextUpdateMs)}`
+      : "配布開始をお待ちください";
+  }
+};
+
 
 let role = "";
 let roleLv = 1;
@@ -472,10 +600,10 @@ let books = [];
 let equipped = [];
 let searchQuery = "";
 let modalOpen = false;
+let modalTab = "summary"; // "summary" | "simulation"
 
 const esc = s => String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 
-// スキル枠拡張コスト計算関数
 const calculateSlotCost = (slotCount) => {
   let cost = 0;
   for (let i = 0; i < slotCount; i++) {
@@ -486,13 +614,25 @@ const calculateSlotCost = (slotCount) => {
   return cost;
 };
 
-// ステータスポイント総合計算
 const getStatusPointSummary = () => {
   const statSum = Object.values(stats).reduce((acc, curr) => acc + (curr || 0), 0);
   const statPt = statSum * 3;
   const slotPt = calculateSlotCost(equipped.length);
   const totalPt = statPt + slotPt;
   return { statSum, statPt, slotPt, totalPt };
+};
+
+const canAffordStatValue = (key, value) => {
+  const nextValue = Math.max(0, parseInt(value, 10) || 0);
+  const currentValue = stats[key] || 0;
+  const deltaCost = (nextValue - currentValue) * 3;
+  return getAvailablePoints() >= deltaCost;
+};
+
+const canAffordNextSlot = () => {
+  const currentCost = calculateSlotCost(equipped.length);
+  const nextCost = calculateSlotCost(equipped.length + 1);
+  return getAvailablePoints() >= (nextCost - currentCost);
 };
 
 const formatReqText = (req) => {
@@ -502,6 +642,67 @@ const formatReqText = (req) => {
   if (req.type === "multiStat") return Object.entries(req.stats).map(([k,v]) => `${STATS_LABEL[k]} ${v}`).join(' & ');
   if (req.type === "book") return `【${req.book}】` + (req.role ? ` (${req.role})` : '');
   return "";
+};
+
+// 行動数からSLvを取得する関数 (1~10:SLv0, 11~20:SLv1, 21~29:SLv2, 30~40:SLv3)
+const getSLvForTurn = (turn) => {
+  if (turn <= 10) return 0;
+  if (turn <= 20) return 1;
+  if (turn <= 29) return 2;
+  return 3;
+};
+
+// 特定ターンでスキルが発動条件を満たすかチェックする関数
+const checkSkillTrigger = (skill, turn, currentSLv) => {
+  if (!skill || !skill.trigger) return false;
+  const trigger = skill.trigger;
+
+  // 1. SLv条件の検証
+  let reqSLv = 0;
+  const slvMatch = trigger.match(/SLv(\d+)以上/);
+  if (slvMatch) {
+    reqSLv = parseInt(slvMatch[1], 10);
+  }
+  if (currentSLv < reqSLv) {
+    return false;
+  }
+
+  // 2. N行動毎（倍数）の検証
+  const intervalMatch = trigger.match(/(\d+)行動毎/);
+  if (intervalMatch) {
+    const interval = parseInt(intervalMatch[1], 10);
+    return (turn % interval === 0);
+  }
+
+  // 3. 戦闘開始時トリガーは1行動目のみ発動対象
+  if (trigger.includes("戦闘開始時")) {
+    return turn === 1;
+  }
+
+  // 倍数指定のない「通常時」「自分行動前」「ターン開始時」などはSLvを満たしていれば発動可能
+  return true;
+};
+
+// 1〜40行動のシミュレーションを実行する関数
+const runSimulation = () => {
+  const simulation = [];
+  for (let turn = 1; turn <= 40; turn++) {
+    const slv = getSLvForTurn(turn);
+    const isSLvUp = (turn === 11 || turn === 21 || turn === 30);
+    let triggered = null;
+
+    // セットされているスキル（1枠目〜12枠目の順）を上から順に評価
+    for (let idx = 0; idx < equipped.length; idx++) {
+      const skill = equipped[idx];
+      if (checkSkillTrigger(skill, turn, slv)) {
+        triggered = { slot: idx + 1, skill };
+        break; // 最初に条件を満たしたスキルが優先発動
+      }
+    }
+
+    simulation.push({ turn, slv, isSLvUp, triggered });
+  }
+  return simulation;
 };
 
 const getLearnable = () => SKILLS.filter(skill => {
@@ -527,17 +728,32 @@ const getLearnable = () => SKILLS.filter(skill => {
   return true;
 });
 
-function setStat(k,v){ stats[k] = Math.max(0, parseInt(v,10) || 0); render(); }
+function setStat(k,v){
+  const nextValue = Math.max(0, parseInt(v,10) || 0);
+  if (!canAffordStatValue(k, nextValue)) {
+    showToast("⚠️ ステータスポイントが不足しています");
+    render();
+    return;
+  }
+  stats[k] = nextValue;
+  render();
+}
 function toggleBook(b){ books = books.includes(b) ? books.filter(x=>x!==b) : [...books,b]; render(); }
 function removeSkill(name){ equipped = equipped.filter(s=>s.name!==name); render(); }
 function toggleSkill(skill){
   if(equipped.some(s=>s.name===skill.name)){ removeSkill(skill.name); return; }
   if(equipped.length >= 12) return;
+
+  if (!canAffordNextSlot()) {
+    showToast("⚠️ スキル枠拡張のポイントが不足しています");
+    return;
+  }
+
   equipped = [...equipped, skill];
   render();
 }
-function openModal(){modalOpen=true; renderModal();}
-function closeModal(){modalOpen=false; renderModal();}
+function openModal(tab = "summary"){ modalTab = tab; modalOpen = true; renderModal(); }
+function closeModal(){ modalOpen = false; renderModal(); }
 
 function showToast(msg){
   const toast = document.getElementById("toast");
@@ -558,6 +774,33 @@ function copyBuildToClipboard(){
     text += `${idx+1}. ${s.name} (${s.trigger}) : ${s.effect}\n`;
   });
 
+  copyToClipboard(text, "📋 ビルド構成をクリップボードにコピーしました！");
+}
+
+function copySimToClipboard(){
+  const sim = runSimulation();
+  let text = `【1〜40行動 スキル発動シミュレーション】\n`;
+  text += `ロール: ${role ? `${role} Lv${roleLv}` : 'なし'} | 装備スキル数: ${equipped.length}/12\n\n`;
+
+  sim.forEach(item => {
+    const slvUpStr = item.isSLvUp ? ` [★SLv UP -> SLv${item.slv}]` : ` [SLv${item.slv}]`;
+    const mults = [];
+    if (item.turn % 4 === 0) mults.push("4倍数");
+    if (item.turn % 7 === 0) mults.push("7倍数");
+    if (item.turn % 9 === 0) mults.push("9倍数");
+    const multStr = mults.length ? ` (${mults.join(', ')})` : "";
+
+    if (item.triggered) {
+      text += `${item.turn}行動目${slvUpStr}${multStr}: Slot#${item.triggered.slot} 【${item.triggered.skill.name}】 (${item.triggered.skill.trigger}) -> ${item.triggered.skill.effect}\n`;
+    } else {
+      text += `${item.turn}行動目${slvUpStr}${multStr}: (発動スキルなし)\n`;
+    }
+  });
+
+  copyToClipboard(text, "📋 発動シミュレーション結果をコピーしました！");
+}
+
+function copyToClipboard(text, successMsg) {
   const tempTextArea = document.createElement("textarea");
   tempTextArea.value = text;
   document.body.appendChild(tempTextArea);
@@ -565,7 +808,7 @@ function copyBuildToClipboard(){
   document.execCommand("copy");
   document.body.removeChild(tempTextArea);
 
-  showToast("📋 ビルド構成をクリップボードにコピーしました！");
+  showToast(successMsg);
 }
 
 function render(){
@@ -583,13 +826,15 @@ function render(){
       </div>
 
       <!-- 消費ステータスポイント表示 -->
-      <div class="pt-card">
-        <div class="pt-card-header">合計消費ステータスポイント</div>
-        <div class="pt-card-value">${totalPt} <span>PT</span></div>
+      <div class="pt-card" id="point-card">
+        <div class="pt-card-header">現在利用可能なステータスポイント</div>
+        <div class="pt-card-available" id="remaining-pt">-- PT</div>
         <div class="pt-card-details">
-          <div>ステータス (${statSum}pt): <span>${statPt} PT</span></div>
-          <div>スキル枠拡張 (${equipped.length}枠): <span>${slotPt} PT</span></div>
+          <div>総所持: <span id="total-pt">-- PT</span></div>
+          <div>消費: <span id="consumed-pt">${totalPt} PT</span></div>
         </div>
+        <div class="pt-card-next" id="next-point">次回配布まで: 計算中...</div>
+        <div id="point-detail" style="display:none"></div>
       </div>
 
       <div class="section">
@@ -607,6 +852,9 @@ function render(){
 
       <div class="section">
         <h3>ステータス (1ptにつき 3 PT消費)</h3>
+        <div style="font-size:11px;color:var(--slate-400);margin:-3px 0 8px">
+          所持ポイントの範囲内で割り振れます
+        </div>
         <div class="stat-grid">
           ${Object.keys(STATS_LABEL).map(k=>`
             <div class="stat"><label>${STATS_LABEL[k]}</label>
@@ -699,8 +947,8 @@ function render(){
   document.querySelectorAll("[data-skill]").forEach(el=>el.onclick=()=>toggleSkill(SKILLS.find(s=>s.name===el.dataset.skill)));
   document.querySelectorAll("[data-remove]").forEach(el=>el.onclick=()=>removeSkill(el.dataset.remove));
   document.getElementById("clear-btn").onclick=()=>{equipped=[];render();};
-  document.getElementById("summary-btn").onclick=openModal;
-  document.getElementById("mobile-summary").onclick=openModal;
+  document.getElementById("summary-btn").onclick=()=>openModal("summary");
+  document.getElementById("mobile-summary").onclick=()=>openModal("summary");
 }
 
 function skillCard(skill){
@@ -735,74 +983,186 @@ function renderModal(){
     <div class="modal-backdrop" id="backdrop">
       <div class="modal">
         <div class="modal-head">
-          <h2>☷　現在のビルド構成</h2>
+          <h2>☷　ビルド確認＆シミュレーション</h2>
           <button class="close" id="close-modal">×</button>
         </div>
+        
         <div class="modal-body">
-          <div class="summary-grid">
-            <div>
-              <div class="summary-box" style="border-left:4px solid var(--indigo);">
-                <h3>消費ステータスポイント</h3>
-                <div class="row"><span>合計消費ポイント</span><b style="font-size:16px;color:var(--indigo)">${totalPt} PT</b></div>
-                <div class="row"><span style="color:var(--slate-600)">ステータス消費 (計${statSum}pt × 3)</span><b>${statPt} PT</b></div>
-                <div class="row"><span style="color:var(--slate-600)">スキル枠拡張 (${equipped.length}枠)</span><b>${slotPt} PT</b></div>
-              </div>
-
-              <div class="summary-box">
-                <h3>ロール / 設定</h3>
-                <div class="row"><span>選択ロール</span><span class="tag">${esc(role ? `${role} (Lv${roleLv})` : "未設定")}</span></div>
-                <div style="font-size:12px;color:var(--slate-500);margin:14px 0 6px;font-weight:700">有効なスキルブック</div>
-                ${books.length ? `<div class="tags">${books.map(b=>`<span class="book-tag">${esc(b)}</span>`).join("")}</div>` : '<span style="font-size:12px;color:var(--slate-400);font-style:italic">選択なし</span>'}
-              </div>
-
-              <div class="summary-box">
-                <h3>ステータス</h3>
-                ${Object.entries(STATS_LABEL).map(([k,l])=>`
-                  <div class="row"><span style="color:var(--slate-600)">${l}</span><b style="background:var(--slate-100);padding:2px 8px;border-radius:6px">${stats[k]}</b></div>
-                `).join("")}
-              </div>
-            </div>
-
-            <div class="summary-box" style="margin-bottom:0">
-              <h3 style="display:flex;justify-content:space-between;align-items:center">
-                <span>装備スキル</span>
-                <span class="tag">${equipped.length} / 12 枠 (${slotPt} PT)</span>
-              </h3>
-              ${equipped.length ? `
-                <div class="summary-skills">
-                  ${equipped.map((s, idx)=>`
-                    <div class="summary-skill">
-                      <div style="display:flex;justify-content:space-between;align-items:center">
-                        <b>${esc(s.name)}</b>
-                        ${SLOT_COSTS[idx] > 0 ? `<span style="font-size:10px;background:#c7d2fe;color:#3730a3;padding:1px 5px;border-radius:4px;font-weight:700">+${SLOT_COSTS[idx]} PT</span>` : ''}
-                      </div>
-                      <div>${esc(s.trigger)}</div>
-                      <span>${esc(s.effect)}</span>
-                    </div>
-                  `).join("")}
-                </div>
-              ` : `<div class="empty" style="padding:40px 10px">スキルが選択されていません</div>`}
-            </div>
+          <!-- モーダル内タブ選択 -->
+          <div class="modal-tabs">
+            <button class="tab-btn ${modalTab==='summary'?'active':''}" id="tab-summary-btn">
+              📊 ビルド概要
+            </button>
+            <button class="tab-btn ${modalTab==='simulation'?'active':''}" id="tab-sim-btn">
+              ⚡ 行動シミュレーション (1〜40行動)
+            </button>
           </div>
+
+          ${modalTab === 'summary' ? renderModalSummary(statSum, statPt, slotPt, totalPt) : renderModalSimulation()}
         </div>
+
         <div class="modal-foot">
-          <button class="btn outline" id="copy-build-btn">📋 テキストでコピー</button>
+          <button class="btn outline" id="modal-copy-btn">
+            ${modalTab === 'summary' ? '📋 ビルド概要をコピー' : '📋 シミュレーション結果をコピー'}
+          </button>
           <button class="btn primary" id="close-modal-2">閉じる</button>
         </div>
       </div>
     </div>
   `;
 
-  document.getElementById("close-modal").onclick=closeModal;
-  document.getElementById("close-modal-2").onclick=closeModal;
-  document.getElementById("copy-build-btn").onclick=copyBuildToClipboard;
-  document.getElementById("backdrop").onclick=e=>{if(e.target.id==="backdrop")closeModal();};
+  document.getElementById("close-modal").onclick = closeModal;
+  document.getElementById("close-modal-2").onclick = closeModal;
+  document.getElementById("backdrop").onclick = e => { if(e.target.id === "backdrop") closeModal(); };
+
+  document.getElementById("tab-summary-btn").onclick = () => { modalTab = "summary"; renderModal(); };
+  document.getElementById("tab-sim-btn").onclick = () => { modalTab = "simulation"; renderModal(); };
+
+  document.getElementById("modal-copy-btn").onclick = () => {
+    if (modalTab === 'summary') {
+      copyBuildToClipboard();
+    } else {
+      copySimToClipboard();
+    }
+  };
+}
+
+function renderModalSummary(statSum, statPt, slotPt, totalPt){
+  return `
+    <div class="summary-grid">
+      <div>
+        <div class="summary-box" style="border-left:4px solid var(--indigo);">
+          <h3>消費ステータスポイント</h3>
+          <div class="row"><span>合計消費ポイント</span><b style="font-size:16px;color:var(--indigo)">${totalPt} PT</b></div>
+          <div class="row"><span style="color:var(--slate-600)">ステータス消費 (計${statSum}pt × 3)</span><b>${statPt} PT</b></div>
+          <div class="row"><span style="color:var(--slate-600)">スキル枠拡張 (${equipped.length}枠)</span><b>${slotPt} PT</b></div>
+        </div>
+
+        <div class="summary-box">
+          <h3>ロール / 設定</h3>
+          <div class="row"><span>選択ロール</span><span class="tag">${esc(role ? `${role} (Lv${roleLv})` : "未設定")}</span></div>
+          <div style="font-size:12px;color:var(--slate-500);margin:14px 0 6px;font-weight:700">有効なスキルブック</div>
+          ${books.length ? `<div class="tags">${books.map(b=>`<span class="book-tag">${esc(b)}</span>`).join("")}</div>` : '<span style="font-size:12px;color:var(--slate-400);font-style:italic">選択なし</span>'}
+        </div>
+
+        <div class="summary-box">
+          <h3>ステータス</h3>
+          ${Object.entries(STATS_LABEL).map(([k,l])=>`
+            <div class="row"><span style="color:var(--slate-600)">${l}</span><b style="background:var(--slate-100);padding:2px 8px;border-radius:6px">${stats[k]}</b></div>
+          `).join("")}
+        </div>
+      </div>
+
+      <div class="summary-box" style="margin-bottom:0">
+        <h3 style="display:flex;justify-content:space-between;align-items:center">
+          <span>装備スキル</span>
+          <span class="tag">${equipped.length} / 12 枠 (${slotPt} PT)</span>
+        </h3>
+        ${equipped.length ? `
+          <div class="summary-skills">
+            ${equipped.map((s, idx)=>`
+              <div class="summary-skill">
+                <div style="display:flex;justify-content:space-between;align-items:center">
+                  <b>${esc(s.name)}</b>
+                  ${SLOT_COSTS[idx] > 0 ? `<span style="font-size:10px;background:#c7d2fe;color:#3730a3;padding:1px 5px;border-radius:4px;font-weight:700">+${SLOT_COSTS[idx]} PT</span>` : ''}
+                </div>
+                <div>${esc(s.trigger)}</div>
+                <span>${esc(s.effect)}</span>
+              </div>
+            `).join("")}
+          </div>
+        ` : `<div class="empty" style="padding:40px 10px">スキルが選択されていません</div>`}
+      </div>
+    </div>
+  `;
+}
+
+function renderModalSimulation(){
+  const simResults = runSimulation();
+
+  return `
+    <div>
+      <div class="sim-header-info">
+        <div>
+          <b>発動優先度:</b> 上の枠(1枠目〜)から優先評価 / 行動毎に合致した最初のスキルが発動
+        </div>
+        <div class="sim-legend">
+          <span>SLv区切り:</span>
+          <span class="slv-badge slv-0">1〜10行動: SLv0</span>
+          <span class="slv-badge slv-1">11〜20行動: SLv1</span>
+          <span class="slv-badge slv-2">21〜29行動: SLv2</span>
+          <span class="slv-badge slv-3">30〜40行動: SLv3</span>
+        </div>
+      </div>
+
+      ${!equipped.length ? `
+        <div class="empty" style="background:white;padding:50px 20px">
+          ⓘ スキルがセットされていません。スキルを装備するとシミュレーションが表示されます。
+        </div>
+      ` : `
+        <div class="sim-table-container">
+          <table class="sim-table">
+            <thead>
+              <tr>
+                <th style="width:110px">行動数</th>
+                <th style="width:75px">SLv</th>
+                <th style="width:180px">発動スキル</th>
+                <th style="width:160px">発動条件 (トリガー)</th>
+                <th>スキル効果</th>
+              </tr>
+            </thead>
+            <tbody>
+              ${simResults.map(item => {
+                const is4 = item.turn % 4 === 0;
+                const is7 = item.turn % 7 === 0;
+                const is9 = item.turn % 9 === 0;
+
+                let rowClass = "sim-row";
+                if (item.isSLvUp) rowClass += " slv-up-row";
+                if (is4) rowClass += " has-mult-4";
+                if (is7) rowClass += " has-mult-7";
+                if (is9) rowClass += " has-mult-9";
+
+                return `
+                  <tr class="${rowClass}">
+                    <td>
+                      <b>${item.turn} 行動目</b>
+                      ${is4 ? '<span class="mult-badge mult-4">4倍</span>' : ''}
+                      ${is7 ? '<span class="mult-badge mult-7">7倍</span>' : ''}
+                      ${is9 ? '<span class="mult-badge mult-9">9倍</span>' : ''}
+                    </td>
+                    <td>
+                      <span class="slv-badge slv-${item.slv}">SLv${item.slv}</span>
+                      ${item.isSLvUp ? '<span class="slv-up-tag">UP</span>' : ''}
+                    </td>
+                    <td>
+                      ${item.triggered ? `
+                        <span class="slot-badge">#${item.triggered.slot}</span>
+                        <b style="color:#312e81">${esc(item.triggered.skill.name)}</b>
+                      ` : '<span class="no-skill">発動なし</span>'}
+                    </td>
+                    <td style="color:var(--slate-600);font-size:11px">
+                      ${item.triggered ? esc(item.triggered.skill.trigger) : '-'}
+                    </td>
+                    <td style="color:var(--slate-700)">
+                      ${item.triggered ? esc(item.triggered.skill.effect) : '-'}
+                    </td>
+                  </tr>
+                `;
+              }).join("")}
+            </tbody>
+          </table>
+        </div>
+      `}
+    </div>
+  `;
 }
 
 window.onload = function() {
   render();
+  updatePointCard();
+  setInterval(updatePointCard, 1000);
 };
 </script>
 </body>
 </html>
-
