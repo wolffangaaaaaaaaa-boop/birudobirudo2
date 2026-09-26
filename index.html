@@ -639,7 +639,7 @@ const updatePointCard = () => {
   if (detailEl) {
     detailEl.textContent =
       `初期 ${pts.initial ?? INITIAL_POINTS} + 配布${pts.distributed} / ` +
-      `ステータス \({statPt} + 枠\){slotPt}`;
+      `ステータス ${statPt} + 枠${slotPt}`;
   }
 
   const nextEl = document.getElementById("next-point");
