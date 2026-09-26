@@ -537,45 +537,71 @@ const SLOT_COSTS = [0, 0, 0, 0, 0, 0, 35, 40, 45, 50, 60, 70];
 
 // --- 時間経過によるステータスポイント配布 ---
 const INITIAL_POINTS = 30;
-const BASE_DATE_STR = "2026-09-12T18:00:00+09:00";
+
+// 通常配布の設定
+const NORMAL_BASE_DATE_STR = "2026-09-12T18:00:00+09:00"; // 初回通常配布日時
+const INCREASE_DATE_STR = "2026-09-26T00:00:00+09:00";    // 4ptに増加する日時（9月26日 0:00〜）
 const NORMAL_DIST_HOURS = 12;
-const NORMAL_DIST_POINTS = 3;
+const EARLY_NORMAL_POINTS = 3;  // 9/26前の通常配布PT
+const LATE_NORMAL_POINTS = 4;   // 9/26以降の通常配布PT
+
+// ボーナス配布の設定
+const BONUS_BASE_DATE_STR = "2026-09-12T06:00:00+09:00";  // 初回ボーナス配布日時（12日 朝6:00）
 const BONUS_DIST_DAYS = 7;
 const BONUS_DIST_POINTS = 20;
 
 const calculateDistributedPoints = () => {
-  const baseDate = new Date(BASE_DATE_STR).getTime();
   const now = Date.now();
+  const normalBaseDate = new Date(NORMAL_BASE_DATE_STR).getTime();
+  const increaseDate = new Date(INCREASE_DATE_STR).getTime();
+  const bonusBaseDate = new Date(BONUS_BASE_DATE_STR).getTime();
 
-  if (now < baseDate) {
-    return {
-      initial: INITIAL_POINTS,
-      distributed: 0,
-      total: INITIAL_POINTS,
-      nextUpdateMs: baseDate - now
-    };
-  }
-
-  const diffMs = now - baseDate;
   const halfDayMs = NORMAL_DIST_HOURS * 60 * 60 * 1000;
   const weekMs = BONUS_DIST_DAYS * 24 * 60 * 60 * 1000;
 
-  // 配布HTMLの仕様をそのまま維持：
-  // 基準日時を1回目の通常配布として +3pt
-  const normalCount = Math.floor(diffMs / halfDayMs) + 1;
-  const bonusCount = Math.floor(diffMs / weekMs);
+  // --- 1. ボーナスポイントの計算 (12日 朝6時を起点に7日毎) ---
+  let bonusDistributed = 0;
+  if (now >= bonusBaseDate) {
+    const bonusCount = Math.floor((now - bonusBaseDate) / weekMs) + 1;
+    bonusDistributed = bonusCount * BONUS_DIST_POINTS;
+  }
 
-  const distributed =
-    normalCount * NORMAL_DIST_POINTS +
-    bonusCount * BONUS_DIST_POINTS;
+  // --- 2. 通常ポイントの計算 (9/26を境に3pt→4ptへ変更) ---
+  let normalDistributed = 0;
+  let nextUpdateMs = 0;
+  let currentNormalPoints = EARLY_NORMAL_POINTS;
 
-  const timeSinceLastNormal = diffMs % halfDayMs;
+  if (now < normalBaseDate) {
+    nextUpdateMs = normalBaseDate - now;
+  } else {
+    // 基準日時からの総配布回数 (12/18:00 を1回目とする)
+    const normalCount = Math.floor((now - normalBaseDate) / halfDayMs) + 1;
+
+    // 9/26より前に発生した配布回数を算出
+    const countBeforeIncrease = Math.ceil((increaseDate - normalBaseDate) / halfDayMs);
+    const earlyCount = Math.min(normalCount, Math.max(0, countBeforeIncrease));
+    const lateCount = Math.max(0, normalCount - earlyCount);
+
+    // 3pt時代と4pt時代の合計ポイント
+    normalDistributed = (earlyCount * EARLY_NORMAL_POINTS) + (lateCount * LATE_NORMAL_POINTS);
+
+    // 次回配布までの時間
+    const timeSinceLastNormal = (now - normalBaseDate) % halfDayMs;
+    nextUpdateMs = halfDayMs - timeSinceLastNormal;
+
+    // 次回配布時に付与されるポイント数（次回配布日時が9/26以降なら4pt）
+    const nextDistributionTime = now + nextUpdateMs;
+    currentNormalPoints = (nextDistributionTime >= increaseDate) ? LATE_NORMAL_POINTS : EARLY_NORMAL_POINTS;
+  }
+
+  const distributed = normalDistributed + bonusDistributed;
 
   return {
     initial: INITIAL_POINTS,
     distributed,
     total: INITIAL_POINTS + distributed,
-    nextUpdateMs: halfDayMs - timeSinceLastNormal
+    nextUpdateMs,
+    currentNormalPoints // 次回付与される通常ポイント数
   };
 };
 
@@ -590,7 +616,7 @@ const formatPointTimeLeft = (ms) => {
   const hours = Math.floor(totalSeconds / 3600);
   const minutes = Math.floor((totalSeconds % 3600) / 60);
   const seconds = totalSeconds % 60;
-  return `${hours}時間 ${minutes}分 ${seconds}秒`;
+  return `\({hours}時間\){minutes}分 ${seconds}秒`;
 };
 
 const updatePointCard = () => {
@@ -605,23 +631,21 @@ const updatePointCard = () => {
   const totalEl = document.getElementById("total-pt");
   const consumedEl = document.getElementById("consumed-pt");
 
-if (remainingEl) {
-  remainingEl.textContent = `${remaining} PT`;
-}
+  if (remainingEl) remainingEl.textContent = `${remaining} PT`;
   if (totalEl) totalEl.textContent = `${pts.total} PT`;
   if (consumedEl) consumedEl.textContent = `${totalPt} PT`;
 
   const detailEl = document.getElementById("point-detail");
   if (detailEl) {
     detailEl.textContent =
-      `初期 ${pts.initial ?? INITIAL_POINTS} + 配布 ${pts.distributed} / ` +
-      `ステータス ${statPt} + 枠 ${slotPt}`;
+      `初期 \({pts.initial ?? INITIAL_POINTS} + 配布\){pts.distributed} / ` +
+      `ステータス \({statPt} + 枠\){slotPt}`;
   }
 
   const nextEl = document.getElementById("next-point");
   if (nextEl) {
     nextEl.textContent = pts.nextUpdateMs > 0
-      ? `次回通常配布 (+${NORMAL_DIST_POINTS} PT) まで: ${formatPointTimeLeft(pts.nextUpdateMs)}`
+      ? `次回通常配布 (+\({pts.currentNormalPoints} PT) まで:\){formatPointTimeLeft(pts.nextUpdateMs)}`
       : "配布開始をお待ちください";
   }
 };
