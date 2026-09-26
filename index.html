@@ -230,24 +230,32 @@ const SKILLS = [
   {"name": "グアルダ", "trigger": "SLv0以上 / 通常時", "req": {"type": "role", "role": "TANK", "minLv": 1}, "effect": "[自]保護+[猛敵2]攻減"},
   {"name": "フォルトレス", "trigger": "ターン開始時", "req": {"type": "role", "role": "TANK", "minLv": 2}, "effect": "[自]HATE増+[堅味2]祝福"},
   {"name": "ミュール", "trigger": "SLv1以上 / 通常時", "req": {"type": "role", "role": "TANK", "minLv": 2}, "effect": "[味全]守増でなければ守増+[味3]良性変調"},
+  {"name": "バリプラス", "trigger": "ターン終了前", "req": {"type": "role", "role": "TANK", "minLv": 3}, "effect": "[味全]守増なら祝福+[乱味]守増でなければ加護"},
+  {"name": "エスクード", "trigger": "SLv1以上 / 通常時", "req": {"type": "role", "role": "TANK", "minLv": 3}, "effect": "[自]保護+[猛敵2]攻減＆麻痺"},
 
   {"name": "パシュート", "trigger": "与ダメ後", "req": {"type": "role", "role": "DPS", "minLv": 1}, "effect": "[敵]★攻撃＆次被ダメ増"},
   {"name": "ディセクト", "trigger": "SLv0以上 / 通常時", "req": {"type": "role", "role": "DPS", "minLv": 1}, "effect": "[弱敵]痛撃＆凍結"},
   {"name": "ディバイド", "trigger": "SLv0以上 / 通常時", "req": {"type": "role", "role": "DPS", "minLv": 1}, "effect": "[敵]疾撃+[敵]反撃"},
   {"name": "リッパー", "trigger": "SLv1以上 / 通常時", "req": {"type": "role", "role": "DPS", "minLv": 2}, "effect": "[弱敵]★痛撃＆凍結"},
   {"name": "ルプトゥラ", "trigger": "SLv1以上 / 通常時", "req": {"type": "role", "role": "DPS", "minLv": 2}, "effect": "[敵]★疾撃+[敵]★反撃"},
+  {"name": "ダウンビート", "trigger": "自分行動前", "req": {"type": "role", "role": "DPS", "minLv": 3}, "effect": "[乱敵/3回]★粗雑攻撃＆守減"},
+  {"name": "トライシュート", "trigger": "SLv2以上 / 通常時", "req": {"type": "role", "role": "DPS", "minLv": 3}, "effect": "[敵]★疾撃+[敵]★反撃+[弱敵]★攻撃"},
 
   {"name": "ルネ", "trigger": "与回復後", "req": {"type": "role", "role": "HEAL", "minLv": 1}, "effect": "[弱味]★回復"},
   {"name": "サナーレ", "trigger": "SLv0以上 / 通常時", "req": {"type": "role", "role": "HEAL", "minLv": 1}, "effect": "[弱味]回復＆加護"},
   {"name": "レスタ", "trigger": "SLv0以上 / 通常時", "req": {"type": "role", "role": "HEAL", "minLv": 1}, "effect": "[弱味]HPが50%以下なら回復+[弱味]回復"},
   {"name": "リサナーレ", "trigger": "SLv1以上 / 通常時", "req": {"type": "role", "role": "HEAL", "minLv": 2}, "effect": "[弱味2]★回復＆加護"},
   {"name": "ゾーエ", "trigger": "SLv0以上 / 味方重傷時", "req": {"type": "role", "role": "HEAL", "minLv": 2}, "effect": "[弱味]HPが25%以下なら★回復＆治癒+[弱味]★回復"},
+  {"name": "プリフィケア", "trigger": "ターン開始時", "req": {"type": "role", "role": "HEAL", "minLv": 3}, "effect": "[弱味]★回復＆保護"},
+  {"name": "レストア", "trigger": "SLv1以上 / 通常時", "req": {"type": "role", "role": "HEAL", "minLv": 3}, "effect": "[弱味]HPが50%以下なら★回復+[弱味]★回復"},
 
   {"name": "ゴスペル", "trigger": "ターン開始時", "req": {"type": "role", "role": "SUP", "minLv": 1}, "effect": "[癒味]祝福＆速増"},
   {"name": "シール", "trigger": "SLv0以上 / 通常時", "req": {"type": "role", "role": "SUP", "minLv": 1}, "effect": "[猛敵]呪縛＆速減"},
   {"name": "ブルカット", "trigger": "SLv0以上 / 通常時", "req": {"type": "role", "role": "SUP", "minLv": 1}, "effect": "[猛味]攻増+[癒味]祝福"},
   {"name": "サプレッション", "trigger": "SLv1以上 / 通常時", "req": {"type": "role", "role": "SUP", "minLv": 2}, "effect": "[猛敵]悪性変調＆攻減+[癒敵]呪縛"},
   {"name": "モルバス", "trigger": "ターン開始時", "req": {"type": "role", "role": "SUP", "minLv": 2}, "effect": "[堅敵2]守減＆阻害"},
+  {"name": "グラーティア", "trigger": "SLv1以上 / 通常時", "req": {"type": "role", "role": "SUP", "minLv": 3}, "effect": "[猛味]良性変調＆攻増+[癒味]祝福"},
+  {"name": "バインド", "trigger": "ターン開始時", "req": {"type": "role", "role": "SUP", "minLv": 3}, "effect": "[猛敵2]麻痺＆攻減"},
 
   // --- 攻撃 ---
   {"name": "猛攻", "trigger": "戦闘開始時", "req": {"type": "stat", "stat": "atk", "val": 5}, "effect": "[自]ATK増＆祝福"},
@@ -260,6 +268,8 @@ const SKILLS = [
   {"name": "ブレイジング", "trigger": "SLv0以上 / 9行動毎", "req": {"type": "stat", "stat": "atk", "val": 30}, "effect": "[自]ATK増+[敵/2回]★攻撃"},
   {"name": "エスカレイト", "trigger": "自分行動前", "req": {"type": "stat", "stat": "atk", "val": 35}, "effect": "[自]ATK増＆祝福"},
   {"name": "アグニストラ", "trigger": "SLv1以上 / 4行動毎", "req": {"type": "stat", "stat": "atk", "val": 40}, "effect": "[敵2/2回]★攻撃＆次被ダメ増"},
+  {"name": "グラキエス", "trigger": "与ダメ後", "req": {"type": "stat", "stat": "atk", "val": 45}, "effect": "[敵]★攻撃+[自]攻増＆次与ダメ増"},
+  {"name": "ニルヴァーナ", "trigger": "SLv0以上 / 11行動毎", "req": {"type": "stat", "stat": "atk", "val": 50}, "effect": "[敵/3回]★攻撃+[自]ATK増"},
 
   // --- 敏捷 ---
   {"name": "瞬足", "trigger": "戦闘開始時", "req": {"type": "stat", "stat": "agi", "val": 5}, "effect": "[自]AGI増＆加護"},
@@ -272,6 +282,8 @@ const SKILLS = [
   {"name": "ステップアップ", "trigger": "SLv0以上 / 9行動毎", "req": {"type": "stat", "stat": "agi", "val": 30}, "effect": "[自]AGI増+[味全]速増＆連続増"},
   {"name": "フリミネオ", "trigger": "自分行動前", "req": {"type": "stat", "stat": "agi", "val": 35}, "effect": "[自]AGI増＆連続増"},
   {"name": "シルファニー", "trigger": "SLv1以上 / 4行動毎", "req": {"type": "stat", "stat": "agi", "val": 40}, "effect": "[味全]連続増＆速増＆加護"},
+  {"name": "フロース", "trigger": "回避時", "req": {"type": "stat", "stat": "agi", "val": 45}, "effect": "[乱敵2]悪性変調+[乱味2]良性変調"},
+  {"name": "ハーモナイズ", "trigger": "SLv0以上 / 11行動毎", "req": {"type": "stat", "stat": "agi", "val": 50}, "effect": "[味全]平穏＆速増＆連続増"},
 
   // --- 器用 ---
   {"name": "集中", "trigger": "戦闘開始時", "req": {"type": "stat", "stat": "dex", "val": 5}, "effect": "[自]DEX増＆祝福"},
@@ -284,6 +296,8 @@ const SKILLS = [
   {"name": "ピンポイント", "trigger": "SLv0以上 / 9行動毎", "req": {"type": "stat", "stat": "dex", "val": 30}, "effect": "[自]DEX増+[敵]★痛撃"},
   {"name": "モルタレア", "trigger": "自分行動前", "req": {"type": "stat", "stat": "dex", "val": 35}, "effect": "[自]DEX増＆攻増"},
   {"name": "キャスリング", "trigger": "SLv1以上 / 5行動毎", "req": {"type": "stat", "stat": "dex", "val": 40}, "effect": "[敵]次被ダメ増＆速減＆★痛撃"},
+  {"name": "アエスタス", "trigger": "与ダメ後", "req": {"type": "stat", "stat": "dex", "val": 45}, "effect": "[弱敵]★痛撃+[乱味2]祝福"},
+  {"name": "セルヴァナス", "trigger": "SLv0以上 / 11行動毎", "req": {"type": "stat", "stat": "dex", "val": 50}, "effect": "[自]祝福+[弱敵3]★痛撃+[自]DEX増"},
 
   // --- 生命 ---
   {"name": "堅守", "trigger": "戦闘開始時", "req": {"type": "stat", "stat": "vit", "val": 5}, "effect": "[自]DEF増＆加護"},
@@ -296,6 +310,8 @@ const SKILLS = [
   {"name": "ディフェンサー", "trigger": "SLv0以上 / 9行動毎", "req": {"type": "stat", "stat": "vit", "val": 30}, "effect": "[自]DEF増+[味全]守増＆保護"},
   {"name": "ドゥーロ", "trigger": "自分行動前", "req": {"type": "stat", "stat": "vit", "val": 35}, "effect": "[自]DEF増＆次被ダメ減＆守増"},
   {"name": "エルダリオン", "trigger": "SLv1以上 / 4行動毎", "req": {"type": "stat", "stat": "vit", "val": 40}, "effect": "[味全]次被ダメ減＆速増＆祝福"},
+  {"name": "ラピス", "trigger": "被攻撃前", "req": {"type": "stat", "stat": "vit", "val": 45}, "effect": "[乱敵2]麻痺＆阻害"},
+  {"name": "レジリエンス", "trigger": "SLv0以上 / 11行動毎", "req": {"type": "stat", "stat": "vit", "val": 50}, "effect": "[味全]治癒＆守増＆保護＆DEF増"},
 
   // --- 精神 ---
   {"name": "快癒", "trigger": "戦闘開始時", "req": {"type": "stat", "stat": "mnd", "val": 5}, "effect": "[自]MND増＆祝福"},
@@ -308,6 +324,8 @@ const SKILLS = [
   {"name": "ソルネーション", "trigger": "SLv0以上 / 9行動毎", "req": {"type": "stat", "stat": "mnd", "val": 30}, "effect": "[自]MND増+[弱味/2回]★回復"},
   {"name": "アスティル", "trigger": "自分行動前", "req": {"type": "stat", "stat": "mnd", "val": 35}, "effect": "[自]MND増＆攻増"},
   {"name": "アブニマーチ", "trigger": "SLv1以上 / 4行動毎", "req": {"type": "stat", "stat": "mnd", "val": 40}, "effect": "[弱味2/2回]★回復＆良性変調"},
+  {"name": "ソラキウム", "trigger": "与回復後", "req": {"type": "stat", "stat": "mnd", "val": 45}, "effect": "[乱味]祝福＆平穏＆速増"},
+  {"name": "インビゴレイト", "trigger": "SLv0以上 / 11行動毎", "req": {"type": "stat", "stat": "mnd", "val": 50}, "effect": "[弱味/4回]★回復＆治癒＆保護+[自]MND増"},
 
   // --- 幸運 ---
   {"name": "業運", "trigger": "戦闘開始時", "req": {"type": "stat", "stat": "luk", "val": 5}, "effect": "[自]LUK増＆加護"},
@@ -320,6 +338,8 @@ const SKILLS = [
   {"name": "クラウン", "trigger": "SLv0以上 / 9行動毎", "req": {"type": "stat", "stat": "luk", "val": 30}, "effect": "[自]LUK増+[敵/3回]悪性変調+[乱味3]良性変調"},
   {"name": "エクリプス", "trigger": "自分行動前", "req": {"type": "stat", "stat": "luk", "val": 35}, "effect": "[自]LUK増+[敵]悪性変調"},
   {"name": "インテグラル", "trigger": "SLv1以上 / 4行動毎", "req": {"type": "stat", "stat": "luk", "val": 40}, "effect": "[味全]保護＆良性変調+[敵全]阻害＆悪性変調"},
+  {"name": "アルカナ", "trigger": "自分行動前", "req": {"type": "stat", "stat": "luk", "val": 45}, "effect": "[乱味]良性変調+[乱敵2]悪性変調"},
+  {"name": "エフェメラル", "trigger": "SLv0以上 / 11行動毎", "req": {"type": "stat", "stat": "luk", "val": 50}, "effect": "[敵全/2回]悪性変調＆阻害+[味全/2回]良性変調"},
 
   // --- 複合ステータス ---
   {"name": "神速", "trigger": "戦闘開始時", "req": {"type": "multiStat", "stats": {"atk": 5, "agi": 5}}, "effect": "[自]ATK増+[味全]連続増"},
@@ -327,90 +347,105 @@ const SKILLS = [
   {"name": "ヴィテス", "trigger": "回避時", "req": {"type": "multiStat", "stats": {"atk": 10, "agi": 10}}, "effect": "[自]速増+[敵]★疾撃"},
   {"name": "カマイタチ", "trigger": "SLv0以上 / 5行動毎", "req": {"type": "multiStat", "stats": {"atk": 15, "agi": 15}}, "effect": "[敵/5回]★疾撃＆守減"},
   {"name": "フォスティ", "trigger": "自分行動前", "req": {"type": "multiStat", "stats": {"atk": 20, "agi": 20}}, "effect": "[自]★粗雑攻撃＆連続増+[敵]★疾撃＆速減"},
+  {"name": "テュポーン", "trigger": "SLv0以上 / 9行動毎", "req": {"type": "multiStat", "stats": {"atk": 25, "agi": 25}}, "effect": "[自]ATK増+[自]速増ならAGI増+[敵]★疾撃"},
 
   {"name": "果敢", "trigger": "戦闘開始時", "req": {"type": "multiStat", "stats": {"atk": 5, "dex": 5}}, "effect": "[自]ATK増＆DEX増"},
   {"name": "トゥデリッヒ", "trigger": "SLv0以上 / 5行動毎", "req": {"type": "multiStat", "stats": {"atk": 5, "dex": 5}}, "effect": "[自]祝福+[敵]★痛撃"},
   {"name": "エンフォルク", "trigger": "ターン開始時", "req": {"type": "multiStat", "stats": {"atk": 10, "dex": 10}}, "effect": "[自]攻増でなければ攻増+[敵]★痛撃"},
   {"name": "アクィラエ", "trigger": "与クリティカル前", "req": {"type": "multiStat", "stats": {"atk": 15, "dex": 15}}, "effect": "[味全]祝福でなければ祝福+[自]次与ダメ増"},
   {"name": "インクルシオ", "trigger": "ターン終了前", "req": {"type": "multiStat", "stats": {"atk": 20, "dex": 20}}, "effect": "[自]祝福ならATK増+[敵]呪縛＆次被ダメ増"},
+  {"name": "ルシオラ", "trigger": "SLv0以上 / 9行動毎", "req": {"type": "multiStat", "stats": {"atk": 25, "dex": 25}}, "effect": "[自]ATK増+[自]攻増ならDEX増+[敵]★痛撃"},
 
   {"name": "鉄壁", "trigger": "戦闘開始時", "req": {"type": "multiStat", "stats": {"atk": 5, "vit": 5}}, "effect": "[味全]DEF増＆次被ダメ減+[自]HATE増"},
   {"name": "フェアラット", "trigger": "ターン開始時", "req": {"type": "multiStat", "stats": {"atk": 5, "vit": 5}}, "effect": "[敵]呪縛＆★反撃"},
   {"name": "オルカーン", "trigger": "被攻撃前", "req": {"type": "multiStat", "stats": {"atk": 10, "vit": 10}}, "effect": "[自]祝福+[敵]★反撃"},
   {"name": "アングリファー", "trigger": "SLv0以上 / 4行動毎", "req": {"type": "multiStat", "stats": {"atk": 15, "vit": 15}}, "effect": "[自]攻増でなければ攻増＆守増+[敵]★反撃"},
   {"name": "シュトライト", "trigger": "自分行動前", "req": {"type": "multiStat", "stats": {"atk": 20, "vit": 20}}, "effect": "[乱敵]★反撃＆凍結＆呪縛"},
+  {"name": "ヘルシャフト", "trigger": "SLv0以上 / 9行動毎", "req": {"type": "multiStat", "stats": {"atk": 25, "vit": 25}}, "effect": "[自]ATK増+[自]祝福ならDEF増+[敵]★反撃"},
 
   {"name": "瞑想", "trigger": "戦闘開始時", "req": {"type": "multiStat", "stats": {"atk": 5, "mnd": 5}}, "effect": "[自]ATK増＆MND増"},
   {"name": "ヴァジュラ", "trigger": "SLv0以上 / 7行動毎", "req": {"type": "multiStat", "stats": {"atk": 5, "mnd": 5}}, "effect": "[敵]★攻撃＆阻害+[弱味]★回復＆保護"},
   {"name": "オーシュタ", "trigger": "SLv1以上 / 通常時", "req": {"type": "multiStat", "stats": {"atk": 10, "mnd": 10}}, "effect": "[敵]★攻撃+[弱味]★回復+[自]保護"},
   {"name": "ヤナトラ", "trigger": "与回復後", "req": {"type": "multiStat", "stats": {"atk": 15, "mnd": 15}}, "effect": "[敵]★攻撃＆阻害＆悪性変調"},
   {"name": "ロンタン", "trigger": "自分行動前", "req": {"type": "multiStat", "stats": {"atk": 20, "mnd": 20}}, "effect": "[敵]★攻撃+[弱味]★回復"},
+  {"name": "カウムディア", "trigger": "SLv0以上 / 9行動毎", "req": {"type": "multiStat", "stats": {"atk": 25, "mnd": 25}}, "effect": "[自]ATK増+[自]保護ならMND増+[敵]★攻撃+[弱味]★回復"},
 
   {"name": "好機", "trigger": "戦闘開始時", "req": {"type": "multiStat", "stats": {"atk": 5, "luk": 5}}, "effect": "[自]ATK増+[味全]LUK増"},
   {"name": "ファターレ", "trigger": "SLv0以上 / 7行動毎", "req": {"type": "multiStat", "stats": {"atk": 5, "luk": 5}}, "effect": "[弱敵]★攻撃＆猛毒+[弱敵]対象の悪性変調が7以上なら★痛撃＆凍結"},
   {"name": "ペリコーロ", "trigger": "SLv0以上 / 5行動毎", "req": {"type": "multiStat", "stats": {"atk": 10, "luk": 10}}, "effect": "[敵2]★攻撃＆猛毒+[弱敵]対象の猛毒が5以上なら★攻撃＆呪縛"},
   {"name": "レウシット", "trigger": "ターン開始時", "req": {"type": "multiStat", "stats": {"atk": 15, "luk": 15}}, "effect": "[敵全]対象の悪性変調が10以下なら★攻撃＆猛毒"},
   {"name": "グロワール", "trigger": "ターン終了前", "req": {"type": "multiStat", "stats": {"atk": 20, "luk": 20}}, "effect": "[自]攻増でなければ攻増＆加護+[弱敵2]猛毒"},
+  {"name": "アンフェール", "trigger": "SLv0以上 / 9行動毎", "req": {"type": "multiStat", "stats": {"atk": 25, "luk": 25}}, "effect": "[自]ATK増+[自]加護ならLUK増+[乱敵2]★攻撃＆悪性変調"},
 
   {"name": "巧妙", "trigger": "戦闘開始時", "req": {"type": "multiStat", "stats": {"agi": 5, "dex": 5}}, "effect": "[自]DEX増＆AGI増"},
   {"name": "ヴィエント", "trigger": "SLv1以上 / 通常時", "req": {"type": "multiStat", "stats": {"agi": 5, "dex": 5}}, "effect": "[味全]粗雑良性変調+[自]粗雑良性変調＆連続増"},
   {"name": "ラングザム", "trigger": "SLv0以上 / 7行動毎", "req": {"type": "multiStat", "stats": {"agi": 10, "dex": 10}}, "effect": "[敵全]粗雑悪性変調＆連続減+[味全]粗雑良性変調＆連続増"},
   {"name": "シュツルム", "trigger": "自分行動前", "req": {"type": "multiStat", "stats": {"agi": 15, "dex": 15}}, "effect": "[味全]粗雑良性変調＆連続増+[敵全]対象の連続値が50以上なら連続減"},
   {"name": "ブリューテ", "trigger": "ターン終了前", "req": {"type": "multiStat", "stats": {"agi": 20, "dex": 20}}, "effect": "[味全]対象の連続値が66以下なら連続増+[自]粗雑良性変調＆DEX増"},
+  {"name": "ファッケル", "trigger": "SLv0以上 / 9行動毎", "req": {"type": "multiStat", "stats": {"agi": 25, "dex": 25}}, "effect": "[自]DEX増+[自]粗雑良性変調＆AGI増+[敵全]粗雑悪性変調"},
 
   {"name": "機敏", "trigger": "戦闘開始時", "req": {"type": "multiStat", "stats": {"agi": 5, "vit": 5}}, "effect": "[自]AGI増＆DEF増"},
   {"name": "エトワール", "trigger": "被攻撃前", "req": {"type": "multiStat", "stats": {"agi": 5, "vit": 5}}, "effect": "[自]速増＆次被ダメ減＆連続増"},
   {"name": "デニシュ", "trigger": "回避時", "req": {"type": "multiStat", "stats": {"agi": 10, "vit": 10}}, "effect": "[味全]加護でなければ加護+[自]守増＆AGI増"},
   {"name": "アンドルミ", "trigger": "SLv0以上 / 5行動毎", "req": {"type": "multiStat", "stats": {"agi": 15, "vit": 15}}, "effect": "[自]速増＆守増＆連続増+[味全]保護"},
   {"name": "オリゾン", "trigger": "ターン開始時", "req": {"type": "multiStat", "stats": {"agi": 20, "vit": 20}}, "effect": "[味全]加護なら速増＆保護＆連続増"},
+  {"name": "ユニヴェール", "trigger": "SLv0以上 / 9行動毎", "req": {"type": "multiStat", "stats": {"agi": 25, "vit": 25}}, "effect": "[自]AGI増+[自]速増ならDEF増+[味全]加護＆速増"},
 
   {"name": "神祇", "trigger": "戦闘開始時", "req": {"type": "multiStat", "stats": {"agi": 5, "mnd": 5}}, "effect": "[自]MND増+[敵全]阻害"},
   {"name": "ルミエール", "trigger": "与回復後", "req": {"type": "multiStat", "stats": {"agi": 5, "mnd": 5}}, "effect": "[弱味]治癒＆連続増"},
   {"name": "エクレール", "trigger": "自分行動前", "req": {"type": "multiStat", "stats": {"agi": 10, "mnd": 10}}, "effect": "[弱味2]★回復＆速増＆連続増"},
   {"name": "デズィル", "trigger": "SLv0以上 / 4行動毎", "req": {"type": "multiStat", "stats": {"agi": 15, "mnd": 15}}, "effect": "[弱味3]治癒＆速増＆★回復"},
   {"name": "アイビス", "trigger": "ターン終了前", "req": {"type": "multiStat", "stats": {"agi": 20, "mnd": 20}}, "effect": "[弱味/2回]★回復＆良性変調＆連続増"},
+  {"name": "ナトゥラエ", "trigger": "SLv0以上 / 9行動毎", "req": {"type": "multiStat", "stats": {"agi": 25, "mnd": 25}}, "effect": "[自]MND増＆連続増+[弱味]★回復＆連続増"},
 
   {"name": "歩先", "trigger": "戦闘開始時", "req": {"type": "multiStat", "stats": {"agi": 5, "luk": 5}}, "effect": "[自]AGI増+[自]LUK増"},
   {"name": "ピノワール", "trigger": "ターン開始時", "req": {"type": "multiStat", "stats": {"agi": 5, "luk": 5}}, "effect": "[乱敵]悪性変調+[乱味2]平穏＆連続増"},
   {"name": "エグジスト", "trigger": "SLv0以上 / 7行動毎", "req": {"type": "multiStat", "stats": {"agi": 10, "luk": 10}}, "effect": "[味全]速増＆平穏+[敵全]速減＆阻害"},
   {"name": "エンライト", "trigger": "自分行動前", "req": {"type": "multiStat", "stats": {"agi": 15, "luk": 15}}, "effect": "[乱敵2]速減+[乱味2]良性変調"},
   {"name": "アナーケ", "trigger": "ターン終了前", "req": {"type": "multiStat", "stats": {"agi": 20, "luk": 20}}, "effect": "[敵全]速減なら悪性変調+[敵3]速減でなければ速減"},
+  {"name": "ラナウェイ", "trigger": "SLv0以上 / 9行動毎", "req": {"type": "multiStat", "stats": {"agi": 25, "luk": 25}}, "effect": "[自]LUK増+[自]速増ならAGI増+[乱敵/3回]速減＆悪性変調"},
 
   {"name": "地久", "trigger": "戦闘開始時", "req": {"type": "multiStat", "stats": {"dex": 5, "vit": 5}}, "effect": "[自]DEX増+[味全]MHP増"},
   {"name": "レソリュート", "trigger": "自分行動前", "req": {"type": "multiStat", "stats": {"dex": 5, "vit": 5}}, "effect": "[味全]粗雑良性変調＆次被ダメ減"},
   {"name": "ナルサック", "trigger": "SLv0以上 / 4行動毎", "req": {"type": "multiStat", "stats": {"dex": 10, "vit": 10}}, "effect": "[味全]粗雑良性変調＆治癒＆MHP増"},
   {"name": "キクタアルク", "trigger": "ターン開始時", "req": {"type": "multiStat", "stats": {"dex": 15, "vit": 15}}, "effect": "[味全]粗雑良性変調＆MHP増"},
   {"name": "マッサリア", "trigger": "自分行動前", "req": {"type": "multiStat", "stats": {"dex": 20, "vit": 20}}, "effect": "[味全]粗雑良性変調＆保護"},
+  {"name": "コリント", "trigger": "SLv0以上 / 9行動毎", "req": {"type": "multiStat", "stats": {"dex": 25, "vit": 25}}, "effect": "[自]DEX増+[自]治癒ならDEF増+[味全]粗雑良性変調＆MHP増"},
 
   {"name": "処置", "trigger": "戦闘開始時", "req": {"type": "multiStat", "stats": {"dex": 5, "mnd": 5}}, "effect": "[自]DEX増＆MND増"},
   {"name": "ショックヒール", "trigger": "SLv0以上 / 味方重傷時", "req": {"type": "multiStat", "stats": {"dex": 5, "mnd": 5}}, "effect": "[弱味/2回]粗雑攻撃＆★回復＆平穏"},
   {"name": "アバランチ", "trigger": "自分行動前", "req": {"type": "multiStat", "stats": {"dex": 10, "mnd": 10}}, "effect": "[弱味]粗雑攻撃＆★回復＆祝福"},
   {"name": "コラプス", "trigger": "SLv0以上 / 5行動毎", "req": {"type": "multiStat", "stats": {"dex": 15, "mnd": 15}}, "effect": "[味全/2回]粗雑良性変調＆★回復"},
   {"name": "デミライズ", "trigger": "ターン開始時", "req": {"type": "multiStat", "stats": {"dex": 20, "mnd": 20}}, "effect": "[弱味/2回]粗雑良性変調＆★回復+[乱敵]粗雑悪性変調"},
+  {"name": "プリシピー", "trigger": "SLv0以上 / 9行動毎", "req": {"type": "multiStat", "stats": {"dex": 25, "mnd": 25}}, "effect": "[自]MND増＆DEX増+[弱味/3回]粗雑攻撃＆★回復"},
 
   {"name": "天理", "trigger": "戦闘開始時", "req": {"type": "multiStat", "stats": {"dex": 5, "luk": 5}}, "effect": "[自]DEX増+[味全]LUK増"},
   {"name": "インヒューズ", "trigger": "ターン終了前", "req": {"type": "multiStat", "stats": {"dex": 5, "luk": 5}}, "effect": "[乱味]粗雑良性変調+[乱敵]粗雑悪性変調＆阻害"},
   {"name": "バクスティラ", "trigger": "SLv1以上 / 通常時", "req": {"type": "multiStat", "stats": {"dex": 10, "luk": 10}}, "effect": "[弱敵]★痛撃＆阻害+[弱敵2]粗雑悪性変調＆阻害"},
   {"name": "カティラ", "trigger": "与クリティカル前", "req": {"type": "multiStat", "stats": {"dex": 15, "luk": 15}}, "effect": "[弱敵]次被ダメ増＆守減＆呪縛"},
   {"name": "キレスタール", "trigger": "ターン開始時", "req": {"type": "multiStat", "stats": {"dex": 20, "luk": 20}}, "effect": "[弱味2]粗雑良性変調＆治癒+[弱敵2]粗雑悪性変調＆阻害"},
+  {"name": "ワミード", "trigger": "SLv0以上 / 9行動毎", "req": {"type": "multiStat", "stats": {"dex": 25, "luk": 25}}, "effect": "[自]LUK増＆DEX増+[弱敵2/2回]粗雑悪性変調＆呪縛"},
 
   {"name": "防備", "trigger": "戦闘開始時", "req": {"type": "multiStat", "stats": {"vit": 5, "mnd": 5}}, "effect": "[味全]DEF増＆保護"},
   {"name": "オートヒール", "trigger": "被攻撃後", "req": {"type": "multiStat", "stats": {"vit": 5, "mnd": 5}}, "effect": "[自]★回復+[弱味]治癒"},
   {"name": "ワイドケア", "trigger": "SLv0以上 / 7行動毎", "req": {"type": "multiStat", "stats": {"vit": 10, "mnd": 10}}, "effect": "[味全]守増＆良性変調+[弱味/2回]★回復＆治癒"},
   {"name": "エクスキュア", "trigger": "SLv0以上 / 味方重傷時", "req": {"type": "multiStat", "stats": {"vit": 15, "mnd": 15}}, "effect": "[弱味]治癒＆守増＆★回復"},
   {"name": "グレイス", "trigger": "ターン終了前", "req": {"type": "multiStat", "stats": {"vit": 20, "mnd": 20}}, "effect": "[弱味]★回復＆守増＆治癒"},
+  {"name": "スヴェート", "trigger": "SLv0以上 / 9行動毎", "req": {"type": "multiStat", "stats": {"vit": 25, "mnd": 25}}, "effect": "[自]MND増+[自]守増ならDEF増+[弱味]★回復＆次被ダメ減"},
 
   {"name": "守護", "trigger": "戦闘開始時", "req": {"type": "multiStat", "stats": {"vit": 5, "luk": 5}}, "effect": "[味全]DEF増＆LUK増"},
   {"name": "リアクト", "trigger": "ターン終了前", "req": {"type": "multiStat", "stats": {"vit": 5, "luk": 5}}, "effect": "[乱味2]保護+[堅味]守増"},
   {"name": "アドバンス", "trigger": "SLv0以上 / 7行動毎", "req": {"type": "multiStat", "stats": {"vit": 10, "luk": 10}}, "effect": "[敵全]呪縛＆阻害+[味全]祝福＆保護"},
   {"name": "リバーサル", "trigger": "ターン開始時", "req": {"type": "multiStat", "stats": {"vit": 15, "luk": 15}}, "effect": "[乱敵]悪性変調＆阻害+[堅味]治癒＆保護"},
   {"name": "インソレント", "trigger": "自分行動前", "req": {"type": "multiStat", "stats": {"vit": 20, "luk": 20}}, "effect": "[堅味2]保護+[猛敵]呪縛＆阻害"},
+  {"name": "ヴィンデクタ", "trigger": "SLv0以上 / 9行動毎", "req": {"type": "multiStat", "stats": {"vit": 25, "luk": 25}}, "effect": "[自]LUK増+[自]保護ならDEF増+[敵全]悪性変調＆阻害"},
 
   {"name": "祈祷", "trigger": "戦闘開始時", "req": {"type": "multiStat", "stats": {"mnd": 5, "luk": 5}}, "effect": "[自]MND増+[味全]LUK増"},
   {"name": "チェインヒール", "trigger": "与回復後", "req": {"type": "multiStat", "stats": {"mnd": 5, "luk": 5}}, "effect": "[弱味]★回復＆治癒"},
   {"name": "シクレツァー", "trigger": "SLv0以上 / 4行動毎", "req": {"type": "multiStat", "stats": {"mnd": 10, "luk": 10}}, "effect": "[味全]★回復＆保護＆良性変調"},
   {"name": "セーフティ", "trigger": "SLv0以上 / 通常時", "req": {"type": "multiStat", "stats": {"mnd": 15, "luk": 15}}, "effect": "[弱味2]良性変調＆回復"},
   {"name": "クマーラ", "trigger": "ターン終了前", "req": {"type": "multiStat", "stats": {"mnd": 20, "luk": 20}}, "effect": "[乱味2]★回復＆良性変調+[自]保護"},
+  {"name": "クラノス", "trigger": "SLv0以上 / 9行動毎", "req": {"type": "multiStat", "stats": {"mnd": 25, "luk": 25}}, "effect": "[自]MND増+[自]保護ならLUK増+[弱味]★回復＆保護"},
 
   // --- スキルブック ---
   {"name": "ヴェノム", "trigger": "ターン開始時", "req": {"type": "book", "book": "猛毒"}, "effect": "[敵/2回]猛毒"},
